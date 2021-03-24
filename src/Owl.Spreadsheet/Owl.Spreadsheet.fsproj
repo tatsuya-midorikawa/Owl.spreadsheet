@@ -2,7 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Spreadsheet.fs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Open-XML-SDK" Version="2.9.1" />
