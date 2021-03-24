@@ -39,7 +39,6 @@ module Spreadsheet =
         SheetId = UInt32Value(uint(sheets.Count() + 1)),
         Name = StringValue(name))
     sheets.Append([| sheet :> OpenXmlElement |])
-    printfn $"sheets count= {sheets.Count()}"
     workbook_part.Workbook.Save()
     document
   
