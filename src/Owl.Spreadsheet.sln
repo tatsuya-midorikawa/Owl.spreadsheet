@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31112.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Owl.Spreadsheet", "Owl.Spreadsheet\Owl.Spreadsheet.fsproj", "{B21A854F-E5E0-4FA7-B590-688BD99722EA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E9E83E28-28FE-4377-ACA0-06E6061C9FF8}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{358DCC22-2F64-4E1B-BBB3-808E060F0C25}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B21A854F-E5E0-4FA7-B590-688BD99722EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B21A854F-E5E0-4FA7-B590-688BD99722EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B21A854F-E5E0-4FA7-B590-688BD99722EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B21A854F-E5E0-4FA7-B590-688BD99722EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B9B6D3A7-1C1F-4860-8D71-1B1430946C2B}
+	EndGlobalSection
+EndGlobal
