@@ -23,6 +23,12 @@ module Spreadsheet =
   let public save (workbook: XLWorkbook) =
     workbook.Save()
     workbook
+    
+  /// <summary>
+  /// ワークブックを保存したあとに閉じる
+  /// </summary>
+  let public save_and_close (workbook: XLWorkbook) =
+    workbook |> (save >> close)
 
   /// <summary>
   /// ワークブックから指定の位置に存在するワークシートを取得する
@@ -56,4 +62,8 @@ module Spreadsheet =
   /// </summary>
   let public new_workbook_with (filepath: string) =
     new_workbook() |> save_as filepath
+
+  let public open_workbook (filepath: string) =
+    new XLWorkbook(filepath)
+   
 
