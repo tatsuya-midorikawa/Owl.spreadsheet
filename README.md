@@ -1,2 +1,2 @@
 # Owl.Spreadsheet
-OpenXml wrapper library for F#
+ClosedXml wrapper library for F#
