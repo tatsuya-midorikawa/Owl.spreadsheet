@@ -1,10 +1,11 @@
 ﻿open Owl.Spreadsheet
 
-"./sample.xlsx"
-|> Spreadsheet.new_workbook_with
-|> Spreadsheet.close
+//let workbook = Spreadsheet.new_workbook_with "./sample.xlsx"
 
-//"./sample.xlsx"
-//|> Spreadsheet.create
-//|> Spreadsheet.save
-//|> Spreadsheet.close
+//workbook.Cell("1").Value <- 500
+
+//Spreadsheet.close workbook
+
+seq{ 0..30 }
+|> Seq.map (fun i -> i.to_column_name())
+|> Seq.iter (printf "%s, ")

@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Extensions.fs" />
+    <Compile Include="Worksheet.fs" />
     <Compile Include="Spreadsheet.fs" />
   </ItemGroup>
 
