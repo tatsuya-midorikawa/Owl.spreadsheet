@@ -1,7 +1,7 @@
 ﻿open Owl.Spreadsheet
 
 "./sample.xlsx"
-|> Spreadsheet.create_with_auto_save true
+|> Spreadsheet.new_workbook_with
 |> Spreadsheet.close
 
 //"./sample.xlsx"
