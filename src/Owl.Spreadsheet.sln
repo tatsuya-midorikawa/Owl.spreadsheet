@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{358D
 		Samples\Spreadsheet.create.fsx = Samples\Spreadsheet.create.fsx
 	EndProjectSection
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Owl.Spreadsheet.TestConsole", "Owl.Spreadsheet.TestConsole\Owl.Spreadsheet.TestConsole.fsproj", "{1ADD3682-583C-465C-85D0-4EAE87B19184}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{B21A854F-E5E0-4FA7-B590-688BD99722EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B21A854F-E5E0-4FA7-B590-688BD99722EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B21A854F-E5E0-4FA7-B590-688BD99722EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1ADD3682-583C-465C-85D0-4EAE87B19184}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ADD3682-583C-465C-85D0-4EAE87B19184}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ADD3682-583C-465C-85D0-4EAE87B19184}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ADD3682-583C-465C-85D0-4EAE87B19184}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
