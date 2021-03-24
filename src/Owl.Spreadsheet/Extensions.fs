@@ -50,5 +50,5 @@ type SpreadsheetHelper =
   /// 行列番号をSpreadsheetのアドレスに変換する
   /// </summary>
   [<Extension>]
-  static member to_address(row: int, col: int) =
-    $"%s{col.to_column_name()}%d{row}"
+  static member to_address((row, column): int * int) =
+    $"%s{column.to_column_name()}%d{row}"

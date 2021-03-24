@@ -1,11 +1,12 @@
-﻿open Owl.Spreadsheet
+﻿open Owl.Spreadsheet.Spreadsheet
+open Owl.Spreadsheet.Worksheet
 
-//let workbook = Spreadsheet.new_workbook_with "./sample.xlsx"
+let workbook = "./sample.xlsx" |> new_workbook_with
+let worksheet = workbook |> get_sheet_at 1
+let cell = worksheet |> get_cell
 
-//workbook.Cell("1").Value <- 500
+for i in 1..9 do
+  for j in 1..9 do
+    cell(i, j).Value <- i * j
 
-//Spreadsheet.close workbook
-
-seq{ 0..30 }
-|> Seq.map (fun i -> i.to_column_name())
-|> Seq.iter (printf "%s, ")
+workbook |> save |> close
