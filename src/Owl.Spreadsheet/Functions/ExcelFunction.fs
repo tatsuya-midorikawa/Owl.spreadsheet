@@ -25,7 +25,7 @@ module ExcelFunction =
   let inline COSH(number) = cosh number
   let inline TANH(number) = tanh number
   let inline MOD(number: ^T, divisor: ^T) = number % divisor
-  let inline POWER(number: ^T, divisor: ^T) = number ** divisor
+  let inline POWER(number: ^T, index: ^T) = number ** index
   let inline PRODUCT(number1: ^T, number2: ^T) = number1 * number2
   // TODO
   let inline LOOKUP() = raise(exn "")
