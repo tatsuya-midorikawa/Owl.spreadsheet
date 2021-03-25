@@ -10,6 +10,7 @@
     <Compile Include="Values\Exception.fs" />
     <Compile Include="Values\Address.fs" />
     <Compile Include="Values\Cell.fs" />
+    <Compile Include="Values\Cells.fs" />
     <Compile Include="Extensions.fs" />
     <Compile Include="Worksheet.fs" />
     <Compile Include="Spreadsheet.fs" />
