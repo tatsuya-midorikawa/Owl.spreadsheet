@@ -3,7 +3,6 @@
 open System
 open ClosedXML.Excel
 
-
 type Cell(cell: IXLCell) =
   member __.as_int 
     with get() =
