@@ -13,6 +13,7 @@
     <Compile Include="Values\Cell.fs" />
     <Compile Include="Values\Cells.fs" />
     <Compile Include="Values\Range.fs" />
+    <Compile Include="Functions\ExcelFunction.fs" />
     <Compile Include="Worksheet.fs" />
     <Compile Include="Spreadsheet.fs" />
   </ItemGroup>
