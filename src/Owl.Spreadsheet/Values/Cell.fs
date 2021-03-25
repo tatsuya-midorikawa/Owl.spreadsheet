@@ -69,11 +69,10 @@ type Cell internal (cell: IXLCell) =
       | :? string as s -> match DateTime.TryParse s with (true, date) -> date | _ -> raise(InvalidCastException $"%A{cell.Value} can't be cast as a datetime.")
       | _ -> match DateTime.TryParse $"{cell.Value}" with (true, date) -> date | _ -> raise(InvalidCastException $"%A{cell.Value} can't be cast as a datetime.")
     and set(value: DateTime) = cell.Value <- value
-
+    
+  member __.raw with get() = cell
   member __.value with get() = cell.Value and set(value) = cell.Value <- value
-  
   member __.get() = __.value
-
   member __.get<'T>() = 
     match typeof<'T> with
        | t when t = typeof<int16> -> __.as_short |> unbox<'T>

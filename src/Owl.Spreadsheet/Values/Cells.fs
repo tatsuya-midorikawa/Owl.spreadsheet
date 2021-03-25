@@ -6,6 +6,7 @@ open System.Collections
 open System.Collections.Generic
 
 type Cells internal (cells: IXLCells) =
+  member __.raw with get() = cells
   member __.value with set(value) = cells.Value <- value
   member __.get() = cells |> Seq.map(fun cell -> Cell(cell))
   member __.set(value) = __.value <- box value

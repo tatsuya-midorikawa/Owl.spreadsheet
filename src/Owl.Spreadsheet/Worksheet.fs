@@ -12,12 +12,12 @@ module Worksheet =
 
   let public get_cells (sheet: IXLWorksheet) (from': int * int) (to':  int * int)  =
     let address = $"%s{from'.to_address()}:%s{to'.to_address()}"
-    Cells(sheet.Cells(address))
+    Cells(sheet.Cells address)
     
   let public get_cells_at (sheet: IXLWorksheet) (from': Address) (to': Address)  =
     let address = $"%s{from'.to_tuple().to_address()}:%s{to'.to_tuple().to_address()}"
-    Cells(sheet.Cells(address))
+    Cells(sheet.Cells address)
 
   let public get_range (sheet: IXLWorksheet) (from': Address) (to': Address) =
     let address = $"%s{from'.to_tuple().to_address()}:%s{to'.to_tuple().to_address()}"
-    sheet.Range(address)
+    Owl.Spreadsheet.Range(sheet.Range address)
