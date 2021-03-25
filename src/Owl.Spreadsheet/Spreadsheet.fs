@@ -60,7 +60,7 @@ module Spreadsheet =
   /// <summary>
   /// 指定したファイルパスで新規ワークブックを作成する
   /// </summary>
-  let public new_workbook_by (filepath: string) =
+  let public new_workbook_with (filepath: string) =
     new_workbook() |> save_as filepath
     
   /// <summary>

@@ -4,7 +4,7 @@ open System
 open ClosedXML.Excel
 
 type Cell internal (cell: IXLCell) =
-  member __.as_short 
+  member private __.as_short 
     with get() =
       match cell.Value with
       | null -> 0s
@@ -13,7 +13,7 @@ type Cell internal (cell: IXLCell) =
       | _ -> match Int16.TryParse $"{cell.Value}" with (true, value) -> value | _ -> raise(InvalidCastException $"%A{cell.Value} can't be cast as a short.")
     and set(value: int16) = cell.Value <- value
 
-  member __.as_int 
+  member private __.as_int 
     with get() =
       match cell.Value with
       | null -> 0
@@ -22,7 +22,7 @@ type Cell internal (cell: IXLCell) =
       | _ -> match Int32.TryParse $"{cell.Value}" with (true, value) -> value | _ -> raise(InvalidCastException $"%A{cell.Value} can't be cast as a integer.")
     and set(value: int) = cell.Value <- value
 
-  member __.as_long
+  member private __.as_long
     with get() =
       match cell.Value with
       | null -> 0L
@@ -31,7 +31,7 @@ type Cell internal (cell: IXLCell) =
       | _ -> match Int64.TryParse $"{cell.Value}" with (true, value) -> value | _ -> raise(InvalidCastException $"%A{cell.Value} can't be cast as a long.")
     and set(value: int64) = cell.Value <- value
 
-  member __.as_single
+  member private __.as_single
     with get() =
       match cell.Value with
       | null -> 0.f
@@ -40,7 +40,7 @@ type Cell internal (cell: IXLCell) =
       | _ -> match Single.TryParse $"{cell.Value}" with (true, value) -> value | _ -> raise(InvalidCastException $"%A{cell.Value} can't be cast as a single.")
     and set(value: float32) = cell.Value <- value
 
-  member __.as_number
+  member private __.as_number
     with get() =
       match cell.Value with
       | null -> 0.
@@ -49,7 +49,7 @@ type Cell internal (cell: IXLCell) =
       | _ -> match Double.TryParse $"{cell.Value}" with (true, value) -> value | _ -> raise(InvalidCastException $"%A{cell.Value} can't be cast as a number.")
     and set(value: float) = cell.Value <- value
 
-  member __.as_money
+  member private __.as_money
     with get() =
       match cell.Value with
       | null -> 0.m
@@ -58,11 +58,11 @@ type Cell internal (cell: IXLCell) =
       | _ -> match Decimal.TryParse $"{cell.Value}" with (true, value) -> value | _ -> raise(InvalidCastException $"%A{cell.Value} can't be cast as a money.")
     and set(value: decimal) = cell.Value <- value
 
-  member __.as_string
+  member private __.as_string
     with get() = match cell.Value with null -> "" | :? string as s -> s | value -> value.ToString()
     and set(value: string) = cell.Value <- value
     
-  member __.as_datetime
+  member private __.as_datetime
     with get() =
       match cell.Value with
       | null -> DateTime.MinValue
