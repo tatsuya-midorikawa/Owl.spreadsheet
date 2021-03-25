@@ -61,7 +61,7 @@ type Cell internal (cell: IXLCell) =
   member __.as_string
     with get() = match cell.Value with null -> "" | :? string as s -> s | value -> value.ToString()
     and set(value: string) = cell.Value <- value
-
+    
   member __.as_datetime
     with get() =
       match cell.Value with
@@ -70,7 +70,7 @@ type Cell internal (cell: IXLCell) =
       | _ -> match DateTime.TryParse $"{cell.Value}" with (true, date) -> date | _ -> raise(InvalidCastException $"%A{cell.Value} can't be cast as a datetime.")
     and set(value: DateTime) = cell.Value <- value
 
-  member __.value with get() = cell.Value and set (value) = cell.Value <- value
+  member __.value with get() = cell.Value and set(value) = cell.Value <- value
 
   member __.get<'T>() = 
     match typeof<'T> with
@@ -86,3 +86,7 @@ type Cell internal (cell: IXLCell) =
        | _ -> raise(exn "")
 
   member __.set<'T>(value: 'T) = __.value <- box value
+  member __.get_formula() = cell.FormulaA1 
+  member __.set_formula(value: string) = cell.FormulaA1  <- value
+  member __.get_formula_r1c1() = cell.FormulaR1C1
+  member __.set_formula_r1c1(value: string) = cell.FormulaR1C1  <- value

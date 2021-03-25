@@ -58,11 +58,20 @@ module Spreadsheet =
     workbook
     
   /// <summary>
-  /// 新規ワークブックを作成する
+  /// 指定したファイルパスで新規ワークブックを作成する
   /// </summary>
-  let public new_workbook_with (filepath: string) =
+  let public new_workbook_by (filepath: string) =
     new_workbook() |> save_as filepath
+    
+  /// <summary>
+  /// テンプレートから新規ワークブックを作成する
+  /// </summary>
+  let public new_workbook_from (template: string) =
+    XLWorkbook.OpenFromTemplate(template)
 
+  /// <summary>
+  /// 既存のワークブックを開く
+  /// </summary>
   let public open_workbook (filepath: string) =
     new XLWorkbook(filepath)
    
