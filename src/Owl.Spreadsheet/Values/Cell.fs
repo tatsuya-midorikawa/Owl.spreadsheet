@@ -71,6 +71,8 @@ type Cell internal (cell: IXLCell) =
     and set(value: DateTime) = cell.Value <- value
 
   member __.value with get() = cell.Value and set(value) = cell.Value <- value
+  
+  member __.get() = __.value
 
   member __.get<'T>() = 
     match typeof<'T> with
