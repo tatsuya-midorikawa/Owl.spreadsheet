@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Values\Types.fs" />
     <Compile Include="Values\Exception.fs" />
     <Compile Include="Values\Address.fs" />
     <Compile Include="Values\Cell.fs" />

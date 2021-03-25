@@ -3,7 +3,16 @@
 open System
 open ClosedXML.Excel
 
-type Cell(cell: IXLCell) =
+type Cell internal (cell: IXLCell) =
+  member __.as_short 
+    with get() =
+      match cell.Value with
+      | null -> 0s
+      | :? double as d -> Convert.ToInt16 d
+      | :? string as s -> match Int16.TryParse s with (true, value) -> value | _ -> raise(InvalidCastException $"%A{cell.Value} can't be cast as a short.")
+      | _ -> match Int16.TryParse $"{cell.Value}" with (true, value) -> value | _ -> raise(InvalidCastException $"%A{cell.Value} can't be cast as a short.")
+    and set(value: int16) = cell.Value <- value
+
   member __.as_int 
     with get() =
       match cell.Value with
@@ -21,6 +30,15 @@ type Cell(cell: IXLCell) =
       | :? string as s -> match Int64.TryParse s with (true, value) -> value | _ -> raise(InvalidCastException $"%A{cell.Value} can't be cast as a long.")
       | _ -> match Int64.TryParse $"{cell.Value}" with (true, value) -> value | _ -> raise(InvalidCastException $"%A{cell.Value} can't be cast as a long.")
     and set(value: int64) = cell.Value <- value
+
+  member __.as_single
+    with get() =
+      match cell.Value with
+      | null -> 0.f
+      | :? double as d -> Convert.ToSingle d
+      | :? string as s -> match Single.TryParse s with (true, value) -> value | _ -> raise(InvalidCastException $"%A{cell.Value} can't be cast as a single.")
+      | _ -> match Single.TryParse $"{cell.Value}" with (true, value) -> value | _ -> raise(InvalidCastException $"%A{cell.Value} can't be cast as a single.")
+    and set(value: float32) = cell.Value <- value
 
   member __.as_number
     with get() =
@@ -53,3 +71,18 @@ type Cell(cell: IXLCell) =
     and set(value: DateTime) = cell.Value <- value
 
   member __.value with get() = cell.Value and set (value) = cell.Value <- value
+
+  member __.get<'T>() = 
+    match typeof<'T> with
+       | t when t = typeof<int16> -> __.as_short |> unbox<'T>
+       | t when t = typeof<int> -> __.as_int |> unbox<'T>
+       | t when t = typeof<int64> -> __.as_long |> unbox<'T>
+       | t when t = typeof<float32> -> __.as_single |> unbox<'T>
+       | t when t = typeof<float> -> __.as_number |> unbox<'T>
+       | t when t = typeof<decimal> -> __.as_money |> unbox<'T>
+       | t when t = typeof<string> -> __.as_string |> unbox<'T>
+       | t when t = typeof<DateTime> -> __.as_datetime |> unbox<'T>
+       | t when t = typeof<obj> -> __.value |> unbox<'T>
+       | _ -> raise(exn "")
+
+  member __.set<'T>(value: 'T) = __.value <- box value
