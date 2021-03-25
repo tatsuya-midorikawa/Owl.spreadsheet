@@ -38,7 +38,7 @@ type SpreadsheetHelper =
   /// 数値をSpreadsheetの列名に変換する
   /// </summary>
   [<Extension>]
-  static member to_column_name(number: int) =
+  static member public to_column_name(number: int) =
     let n = number - 1
     match SpreadsheetHelper.column_name_storage.TryGetValue n with
     | (true, value) -> value
@@ -50,5 +50,5 @@ type SpreadsheetHelper =
   /// 行列番号をSpreadsheetのアドレスに変換する
   /// </summary>
   [<Extension>]
-  static member to_address((row, column): int * int) =
+  static member public to_address((row, column): int * int) =
     $"%s{column.to_column_name()}%d{row}"

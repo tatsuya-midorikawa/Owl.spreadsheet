@@ -16,6 +16,6 @@ let cell = workbook |> get_sheet_at 1 |> get_cell
 for i in 1..9 do
   for j in 1..9 do
     let value = cell(i, j).as_int
-    cell(i, j).value <- value
+    cell(i, j).as_int <- value
 
 workbook |> save_and_close
