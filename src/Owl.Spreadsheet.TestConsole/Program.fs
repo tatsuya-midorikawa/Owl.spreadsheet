@@ -6,15 +6,16 @@ open Owl.Spreadsheet.ExcelFunction
 // ========================
 // Sample 1.
 
-//let workbook = new_workbook_with "./sample.xlsx"
-//let worksheet = workbook |> get_sheet_at 1
-//let cell = worksheet |> get_cell
+let workbook = new_workbook_with "./sample.xlsx"
+let worksheet = workbook |> get_sheet_at 1
+let cell = worksheet |> get_cell
 
-//for i in 1..9 do
-//  for j in 1..9 do
-//    cell(i, j).value <- i * j
+for i in 1..9 do
+  for j in 1..9 do
+    //cell(i, j).set(i * j)
+    cell(i, j).fx(PRODUCT(i, j))
 
-//workbook |> save |> close
+workbook |> save |> close
 
 
 

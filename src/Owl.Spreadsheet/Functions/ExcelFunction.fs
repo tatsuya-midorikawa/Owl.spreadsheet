@@ -30,7 +30,7 @@ module ExcelFunction =
   // TODO
   let inline LOOKUP() = raise(exn "")
   // TODO
-  let inline VLOOKUP() = raise(exn "")
+  let inline VLOOKUP(target:obj, range:Range, column:int, mode:bool) = raise(exn "")
   // TODO
   let inline HLOOKUP() = raise(exn "")
   // TODO

@@ -87,6 +87,7 @@ type Cell internal (cell: IXLCell) =
        | _ -> raise(exn "")
 
   member __.set<'T>(value: 'T) = __.value <- box value
+  member __.fx(value: obj) = cell.FormulaA1 <- value.ToString()
   member __.get_formula() = cell.FormulaA1 
   member __.set_formula(value: string) = cell.FormulaA1  <- value
   member __.get_formula_r1c1() = cell.FormulaR1C1
