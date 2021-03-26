@@ -23,4 +23,15 @@ module Worksheet =
 
   let public get_range_at (sheet: IXLWorksheet) (range: string)=
     Owl.Spreadsheet.Range(sheet.Range range)
+    
+  let public get_column (sheet: IXLWorksheet) (column: int) =
+    sheet.Column(column)
+    
+  let public get_column_at (sheet: IXLWorksheet) (column: string) =
+    sheet.Column(column)
 
+  let public get_columns (sheet: IXLWorksheet) (from': int) (to': int) =
+    sheet.Columns(from', to')
+
+  let public get_columns_at (sheet: IXLWorksheet) (columns: string)=
+    sheet.Columns(columns)
