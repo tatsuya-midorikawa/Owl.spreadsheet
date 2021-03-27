@@ -350,3 +350,5 @@ MigrationBackup/
 .ionide/
 *.xlsx
 src/Owl.Spreadsheet/Properties
+
+.DS_Store
