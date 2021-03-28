@@ -22,3 +22,11 @@ type Range internal (range: IXLRange) =
   member __.cells(from': Address, to': Address) = Cells(range.Cells $"%s{from'.to_string()}:%s{to'.to_string()}")
   member __.cells(from': int * int, to':  int * int) = Cells(range.Cells $"%s{from'.to_address()}:%s{to'.to_address()}")
   member __.cells(address: string) = Cells(range.Cells address)
+  // TODO
+  member __.insert_column_after(number_of_columns: int) = range.InsertColumnsAfter(number_of_columns)
+  // TODO
+  member __.insert_column_before(number_of_columns: int) = range.InsertColumnsBefore(number_of_columns)
+  // TODO
+  member __.insert_row_above(number_of_rows: int) = range.InsertRowsAbove(number_of_rows)
+  // TODO
+  member __.insert_row_below(number_of_rows: int) = range.InsertRowsBelow(number_of_rows)
