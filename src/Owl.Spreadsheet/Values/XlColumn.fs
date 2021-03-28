@@ -5,7 +5,7 @@ open ClosedXML.Excel
 open System.Collections
 open System.Collections.Generic
 
-type XlColumn internal (column: IXLColumn) as self =
+type XlColumn internal (column: IXLColumn) =
   member internal __.raw with get() = column
   member __.value with set(value) = column.Value <- value
   member __.cell_count with get() = column.CellCount
@@ -16,10 +16,10 @@ type XlColumn internal (column: IXLColumn) as self =
   member __.last_cell with get() = XlCell(column.LastCell())
   member __.last_cell_used with get() = XlCell(column.LastCellUsed())
 
-  member __.set(value) = __.value <- box value; self
-  member __.fx(value: obj) = column.FormulaA1 <- value.ToString(); self
-  member __.set_formula(value: string) = column.FormulaA1  <- value; self
-  member __.set_formula_r1c1(value: string) = column.FormulaR1C1  <- value; self
+  member __.set(value) = __.value <- box value
+  member __.fx(value: obj) = column.FormulaA1 <- value.ToString()
+  member __.set_formula(value: string) = column.FormulaA1 <- value
+  member __.set_formula_r1c1(value: string) = column.FormulaR1C1 <- value
   member __.cell(row': int) = XlCell(column.Cell row')
   member __.cells(row': int) = XlCells(column.Cells(row'.ToString()))
   member __.cells(from': int, to': int) = XlCells(column.Cells $"%d{from'}:%d{to'}")
