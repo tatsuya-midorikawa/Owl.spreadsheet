@@ -78,6 +78,9 @@ type XlfuncBuilder private() =
   /// <summary></summary>
   static member public VLOOKUP(target:obj, range:XlRange, column:int, mode:bool) =
     $"VLOOKUP({target},{range.raw.RangeAddress},{column},{mode.ToString().ToUpper()})"
+  /// <summary></summary>
+  static member public VLOOKUP(target:XlCell, range:XlRange, column:int, mode:bool) =
+    $"VLOOKUP({target.raw.Address},{range.raw.RangeAddress},{column},{mode.ToString().ToUpper()})"
 
   // TODO
   /// <summary></summary>
