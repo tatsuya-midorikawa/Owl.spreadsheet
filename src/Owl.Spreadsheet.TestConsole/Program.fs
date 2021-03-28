@@ -1,7 +1,9 @@
 ﻿open Owl.Spreadsheet
 open Owl.Spreadsheet.Spreadsheet
 open Owl.Spreadsheet.Worksheet
-open Owl.Spreadsheet.ExcelFunction
+open type Owl.Spreadsheet.Xlfunc
+open Owl.Spreadsheet.Convert
+//open type Owl.Spreadsheet.XlfuncBuilder
 
 // ========================
 // Sample 1.
@@ -77,11 +79,51 @@ open Owl.Spreadsheet.ExcelFunction
 
 //workbook |> save_as "./output.xlsx" |> close
 
-SUM [0; 1; 2;] |> printfn "%A"
-ABS 1.0 |> printfn "%f"
-POWER(2.0, 2.0) |> printfn "%f"
 
 
-{| X = 12; Y = 240; |}
-|> System.Convert.ToString
-|> printfn "%s"
+//// ========================
+//// Sample 5.
+
+//let workbook = new_workbook_with "./sample.xlsx"
+//let worksheet = workbook |> get_sheet_at 1
+//let cell = worksheet |> get_cell
+//let range = worksheet |> get_range
+
+//for i in 1..10 do
+//  cell(i, 1).set(RANDBETWEEN(1, 10))
+
+//cell(1, 2).fx(RANDBETWEEN(1, 10))
+//cell(1, 3).set(VLOOKUP(cell(1, 2).value, range(1, 1)(10, 1), 1))
+////cell(2, 3).fx(VLOOKUP(cell(1, 2).value, range(1, 1)(10, 1), 1, TRUE))
+
+//workbook |> save |> close
+
+////SUM([0; 1; 2;]) |> printfn "%A"
+//ABS(1.0) |> printfn "%f"
+//POWER(2.0, 2.0) |> printfn "%f"
+
+
+//{| X = 12; Y = 240; |}
+//|> System.Convert.ToString
+//|> printfn "%s"
+
+
+
+// ========================
+// Sample 5.
+
+let workbook = new_workbook_with "./sample.xlsx"
+let worksheet = workbook |> get_sheet_at 1
+let cell = worksheet |> get_cell
+let range = worksheet |> get_range
+
+cell(1, 1).set(datetime.Now)
+let v = cell(1, 1).value
+printfn $"{System.String.IsNullOrEmpty(to_string(v))}"
+
+cell(1, 1).set(null)
+let v2 = cell(1, 1).value
+printfn $"{v2.GetType()}"
+//cell(2, 3).fx(VLOOKUP(cell(1, 2).value, range(1, 1)(10, 1), 1, TRUE))
+
+workbook |> save |> close

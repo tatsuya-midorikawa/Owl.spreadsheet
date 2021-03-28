@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Internal\Convert.fs" />
     <Compile Include="Extensions.fs" />
     <Compile Include="Values\Types.fs" />
     <Compile Include="Values\Exception.fs" />
@@ -14,7 +15,8 @@
     <Compile Include="Values\XlCells.fs" />
     <Compile Include="Values\XlColumn.fs" />
     <Compile Include="Values\XlRange.fs" />
-    <Compile Include="Functions\ExcelFunction.fs" />
+    <Compile Include="Functions\XlfuncBuilder.fs" />
+    <Compile Include="Functions\Xlfunc.fs" />
     <Compile Include="Worksheet.fs" />
     <Compile Include="Spreadsheet.fs" />
   </ItemGroup>

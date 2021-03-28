@@ -3,6 +3,10 @@
 open ClosedXML.Excel
 
 module Spreadsheet =
+  [<Literal>]
+  let TRUE = true
+  [<Literal>]
+  let FALSE = false
 
   /// <summary>
   /// ワークブックを閉じる
