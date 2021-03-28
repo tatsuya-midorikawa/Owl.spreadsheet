@@ -17,12 +17,12 @@ module Worksheet =
   let public get_cells_at (sheet: IXLWorksheet) (range: string)  =
     XlCells(sheet.Cells range)
 
-  let public get_range (sheet: IXLWorksheet) (from': int * int) (to': int * int)=
+  let public get_range (sheet: IXLWorksheet) (from': int * int) (to': int * int) =
     let address = $"%s{from'.to_address()}:%s{to'.to_address()}"
     XlRange(sheet.Range address)
 
-  let public get_range_at (sheet: IXLWorksheet) (range: string)=
-    XlRange(sheet.Range range)
+  let public get_range_at (sheet: IXLWorksheet) (from': string) (to': string) =
+    XlRange(sheet.Range $"{from'}:{to'}")
     
   let public get_column (sheet: IXLWorksheet) (column: int) =
     sheet.Column(column)

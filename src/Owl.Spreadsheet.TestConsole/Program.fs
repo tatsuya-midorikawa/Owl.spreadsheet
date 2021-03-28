@@ -81,49 +81,44 @@ open Owl.Spreadsheet.Convert
 
 
 
-//// ========================
-//// Sample 5.
-
-//let workbook = new_workbook_with "./sample.xlsx"
-//let worksheet = workbook |> get_sheet_at 1
-//let cell = worksheet |> get_cell
-//let range = worksheet |> get_range
-
-//for i in 1..10 do
-//  cell(i, 1).set(RANDBETWEEN(1, 10))
-
-//cell(1, 2).fx(RANDBETWEEN(1, 10))
-//cell(1, 3).set(VLOOKUP(cell(1, 2).value, range(1, 1)(10, 1), 1))
-////cell(2, 3).fx(VLOOKUP(cell(1, 2).value, range(1, 1)(10, 1), 1, TRUE))
-
-//workbook |> save |> close
-
-////SUM([0; 1; 2;]) |> printfn "%A"
-//ABS(1.0) |> printfn "%f"
-//POWER(2.0, 2.0) |> printfn "%f"
-
-
-//{| X = 12; Y = 240; |}
-//|> System.Convert.ToString
-//|> printfn "%s"
-
-
-
 // ========================
 // Sample 5.
 
 let workbook = new_workbook_with "./sample.xlsx"
 let worksheet = workbook |> get_sheet_at 1
 let cell = worksheet |> get_cell
+let cell_at = worksheet |> get_cell_at
 let range = worksheet |> get_range
+let range_at = worksheet |> get_range_at
 
-cell(1, 1).set(datetime.Now)
-let v = cell(1, 1).value
-printfn $"{System.String.IsNullOrEmpty(to_string(v))}"
+for i in 1..10 do
+  cell(i, 1).set(RANDBETWEEN(1, 10))
+  cell(i, 2).set(RANDBETWEEN(1, 10))
+  cell(i, 3).set(POWER(cell(i, 1), cell(i, 2)))
 
-cell(1, 1).set(null)
-let v2 = cell(1, 1).value
-printfn $"{v2.GetType()}"
-//cell(2, 3).fx(VLOOKUP(cell(1, 2).value, range(1, 1)(10, 1), 1, TRUE))
+cell(1, 4).set(RANDBETWEEN(1, 10))
+cell(2, 4).set(VLOOKUP(cell(1, 4), range(1, 1)(10, 1), 1))
+// or cell_at("D2").set(VLOOKUP(cell_at("D1"), range_at("A1")("A10"), 1))
 
 workbook |> save |> close
+
+
+
+//// ========================
+//// Sample 6.
+
+//let workbook = new_workbook_with "./sample.xlsx"
+//let worksheet = workbook |> get_sheet_at 1
+//let cell = worksheet |> get_cell
+//let range = worksheet |> get_range
+
+//cell(1, 1).set(datetime.Now)
+//let v = cell(1, 1).value
+//printfn $"{System.String.IsNullOrEmpty(to_string(v))}"
+
+//cell(1, 1).set(null)
+//let v2 = cell(1, 1).value
+//printfn $"{v2.GetType()}"
+////cell(2, 3).fx(VLOOKUP(cell(1, 2).value, range(1, 1)(10, 1), 1, TRUE))
+
+//workbook |> save |> close

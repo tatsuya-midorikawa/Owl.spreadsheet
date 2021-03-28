@@ -202,7 +202,7 @@ type Xlfunc private() =
 
   /// <summary></summary>
   static member public VLOOKUP(target:obj, range:XlRange, column:int) = 
-    let found = range.raw.Column(column).Cells().FirstOrDefault(fun cell -> obj.Equals(target, cell.Value))
+    let found = range.raw.Column(column).Cells().FirstOrDefault(fun cell -> target = cell.Value)
     if found = null then "#N/A" |> box else found.Value
   /// <summary></summary>
   static member public VLOOKUP(target:XlCell, range:XlRange, column:int) = 
