@@ -48,10 +48,15 @@ module internal Xlfunc =
 type Xlfunc private() =
   /// <summary></summary>
   static member public IF(expression:bool, when_true:unit -> obj, when_false:unit -> obj) =
-    if expression then when_true() else when_false()
+    try
+      if expression then when_true() else when_false()
+    with _ -> "#N/A" |> box
+
   /// <summary></summary>
   static member public IF(expression:bool, when_true:obj, when_false:obj) =
-    if expression then when_true else when_false
+    try
+      if expression then when_true else when_false
+    with _ -> "#N/A" |> box
 
   /// <summary></summary>
   static member public AND(args: bool seq) = args.All(fun arg -> arg)
@@ -65,6 +70,7 @@ type Xlfunc private() =
   /// <summary></summary>
   static member public MAX(args: seq<#obj>) =
     args |> Seq.filter Xlfunc.is_number |> Seq.map Xlfunc.to_number |> Seq.max
+
     
   /// <summary></summary>
   static member public MAX(args: XlCell seq) =
@@ -96,10 +102,12 @@ type Xlfunc private() =
 
   /// <summary></summary>
   static member public SMALL(args: seq<#obj>, rank: int) =
-    let xs = args |> Seq.filter Xlfunc.is_number
-    let index = rank - 1
-    if Seq.length xs < index then "#N/A" :> obj
-    else xs |> Seq.map Xlfunc.to_number |> Seq.sort |> Seq.item index :> obj
+    try
+      let xs = args |> Seq.filter Xlfunc.is_number
+      let index = rank - 1
+      if Seq.length xs < index then "#N/A" :> obj
+      else xs |> Seq.map Xlfunc.to_number |> Seq.sort |> Seq.item index :> obj
+    with _ -> "#N/A" |> box
 
   /// <summary></summary>
   static member public SUM(args: seq<#obj>) =
@@ -201,12 +209,17 @@ type Xlfunc private() =
   static member public LOOKUP() = raise(exn "")
 
   /// <summary></summary>
-  static member public VLOOKUP(target:obj, range:XlRange, column:int) = 
-    let found = range.raw.Column(column).Cells().FirstOrDefault(fun cell -> target = cell.Value)
-    if found = null then "#N/A" |> box else found.Value
+  static member public VLOOKUP(target:obj, range:XlRange, column:int) =
+    try
+      let found = range.raw.Column(column).Cells().FirstOrDefault(fun cell -> target = cell.Value)
+      if found = null then "#N/A" |> box else found.Value
+    with _ -> "#N/A" |> box
+
   /// <summary></summary>
   static member public VLOOKUP(target:XlCell, range:XlRange, column:int) = 
-    Xlfunc.VLOOKUP(target.value, range, column)
+    try
+      Xlfunc.VLOOKUP(target.value, range, column)
+    with _ -> "#N/A" |> box
 
   // TODO
   /// <summary></summary>
@@ -216,9 +229,11 @@ type Xlfunc private() =
   static member public XLOOKUP() = raise(exn "")
 
   /// <summary></summary>
-  static member public RAND() = 
+  static member public RAND() =
     let rand = System.Random()
-    rand.NextDouble()
+    rand.NextDouble() |> box
+    
+
   /// <summary></summary>
   static member public RANDBETWEEN(min, max) = 
     let rand = System.Random()

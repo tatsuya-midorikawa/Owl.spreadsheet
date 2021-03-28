@@ -96,9 +96,8 @@ for i in 1..10 do
   cell(i, 2).set(RANDBETWEEN(1, 10))
   cell(i, 3).set(POWER(cell(i, 1), cell(i, 2)))
 
-cell(1, 4).set(RANDBETWEEN(1, 10))
+cell(1, 4).set(11)
 cell(2, 4).set(VLOOKUP(cell(1, 4), range(1, 1)(10, 1), 1))
-// or cell_at("D2").set(VLOOKUP(cell_at("D1"), range_at("A1")("A10"), 1))
 
 workbook |> save |> close
 
