@@ -2,7 +2,7 @@
 open Owl.Spreadsheet.Spreadsheet
 open Owl.Spreadsheet.Worksheet
 open type Owl.Spreadsheet.Xlfunc
-open Owl.Spreadsheet.Convert
+//open Owl.Spreadsheet.Convert
 //open type Owl.Spreadsheet.XlfuncBuilder
 
 // ========================
@@ -87,9 +87,7 @@ open Owl.Spreadsheet.Convert
 let workbook = new_workbook_with "./sample.xlsx"
 let worksheet = workbook |> get_sheet_at 1
 let cell = worksheet |> get_cell
-let cell_at = worksheet |> get_cell_at
 let range = worksheet |> get_range
-let range_at = worksheet |> get_range_at
 
 for i in 1..10 do
   cell(i, 1).set(RANDBETWEEN(1, 10))
