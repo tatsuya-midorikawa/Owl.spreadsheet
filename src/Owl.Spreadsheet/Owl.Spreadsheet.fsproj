@@ -10,10 +10,10 @@
     <Compile Include="Values\Types.fs" />
     <Compile Include="Values\Exception.fs" />
     <Compile Include="Values\Address.fs" />
-    <Compile Include="Values\Cell.fs" />
-    <Compile Include="Values\Cells.fs" />
-    <Compile Include="Values\Column.fs" />
-    <Compile Include="Values\Range.fs" />
+    <Compile Include="Values\XlCell.fs" />
+    <Compile Include="Values\XlCells.fs" />
+    <Compile Include="Values\XlColumn.fs" />
+    <Compile Include="Values\XlRange.fs" />
     <Compile Include="Functions\ExcelFunction.fs" />
     <Compile Include="Worksheet.fs" />
     <Compile Include="Spreadsheet.fs" />

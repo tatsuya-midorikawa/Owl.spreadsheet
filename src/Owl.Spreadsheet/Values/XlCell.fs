@@ -3,7 +3,7 @@
 open System
 open ClosedXML.Excel
 
-type Cell internal (cell: IXLCell) =
+type XlCell internal (cell: IXLCell) =
   member private __.as_short 
     with get() =
       match cell.Value with
@@ -70,7 +70,7 @@ type Cell internal (cell: IXLCell) =
       | _ -> match DateTime.TryParse $"{cell.Value}" with (true, date) -> date | _ -> raise(InvalidCastException $"%A{cell.Value} can't be cast as a datetime.")
     and set(value: DateTime) = cell.Value <- value
     
-  member __.raw with get() = cell
+  member internal __.raw with get() = cell
   member __.value with get() = cell.Value and set(value) = cell.Value <- value
   member __.worksheet with get() = cell.Worksheet
   member __.get() = __.value

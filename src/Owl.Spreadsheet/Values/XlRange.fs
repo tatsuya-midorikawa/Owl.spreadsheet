@@ -5,23 +5,23 @@ open ClosedXML.Excel
 open System.Collections
 open System.Collections.Generic
 
-type Range internal (range: IXLRange) =
-  member __.raw with get() = range
+type XlRange internal (range: IXLRange) =
+  member internal __.raw with get() = range
   member __.value with set(value) = range.Value <- value
-  member __.first_cell with get() = Cell(range.FirstCell())
-  member __.first_cell_used with get() = Cell(range.FirstCellUsed())
-  member __.last_cell with get() = Cell(range.LastCell())
-  member __.last_cell_used with get() = Cell(range.LastCellUsed())
+  member __.first_cell with get() = XlCell(range.FirstCell())
+  member __.first_cell_used with get() = XlCell(range.FirstCellUsed())
+  member __.last_cell with get() = XlCell(range.LastCell())
+  member __.last_cell_used with get() = XlCell(range.LastCellUsed())
 
   member __.fx(value: obj) = range.FormulaA1 <- value.ToString()
   member __.set(value) = __.value <- box value
   member __.set_formula(value: string) = range.FormulaA1  <- value
   member __.set_formula_r1c1(value: string) = range.FormulaR1C1  <- value
-  member __.cell(row: int, column: int) = Cell(range.Cell(row, column))
-  member __.cell(address: string) = Cell(range.Cell address)
-  member __.cells(from': Address, to': Address) = Cells(range.Cells $"%s{from'.to_string()}:%s{to'.to_string()}")
-  member __.cells(from': int * int, to':  int * int) = Cells(range.Cells $"%s{from'.to_address()}:%s{to'.to_address()}")
-  member __.cells(address: string) = Cells(range.Cells address)
+  member __.cell(row: int, column: int) = XlCell(range.Cell(row, column))
+  member __.cell(address: string) = XlCell(range.Cell address)
+  member __.cells(from': Address, to': Address) = XlCells(range.Cells $"%s{from'.to_string()}:%s{to'.to_string()}")
+  member __.cells(from': int * int, to':  int * int) = XlCells(range.Cells $"%s{from'.to_address()}:%s{to'.to_address()}")
+  member __.cells(address: string) = XlCells(range.Cells address)
   // TODO
   member __.insert_column_after(number_of_columns: int) = range.InsertColumnsAfter(number_of_columns)
   // TODO
