@@ -21,12 +21,10 @@ module Worksheet =
   let public get_range_by (sheet: IXLWorksheet) (from': string) (to': string) =
     get_range_at sheet $"{from'}:{to'}"
     
-  // TODO
   let public get_column (sheet: IXLWorksheet) (column: int) =
-    sheet.Column(column)
-  // TODO
+    XlColumn(sheet.Column(column))
   let public get_column_at (sheet: IXLWorksheet) (column: string) =
-    sheet.Column(column)
+    XlColumn(sheet.Column(column))
     
   // TODO
   let public get_columns (sheet: IXLWorksheet) (from': int) (to': int) =

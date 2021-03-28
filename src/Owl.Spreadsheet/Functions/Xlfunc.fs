@@ -223,7 +223,6 @@ type Xlfunc private() =
     let rand = System.Random()
     rand.NextDouble() |> box
     
-
   /// <summary></summary>
   static member public RANDBETWEEN(min, max) = 
     let rand = System.Random()

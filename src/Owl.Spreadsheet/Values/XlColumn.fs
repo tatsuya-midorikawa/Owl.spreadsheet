@@ -21,11 +21,20 @@ type XlColumn internal (column: IXLColumn) =
   member __.set_formula(value: string) = column.FormulaA1 <- value
   member __.set_formula_r1c1(value: string) = column.FormulaR1C1 <- value
   member __.cell(row': int) = XlCell(column.Cell row')
-  member __.cells(row': int) = XlCells(column.Cells(row'.ToString()))
-  member __.cells(from': int, to': int) = XlCells(column.Cells $"%d{from'}:%d{to'}")
+  member __.cells() = XlCells(column.Cells())
   member __.cells(row_range: string) = XlCells(column.Cells row_range)
+  member __.cells(row': int) = __.cells(row'.ToString())
+  member __.cells(from': int, to': int) = __.cells($"%d{from'}:%d{to'}")
   member __.left() = XlColumn(column.ColumnLeft())
   member __.left(step: int) = XlColumn(column.ColumnLeft(step))
   member __.right() = XlColumn(column.ColumnRight())
   member __.right(step: int) = XlColumn(column.ColumnRight(step))
 
+  interface IEnumerable<XlCell> with
+    member __.GetEnumerator(): IEnumerator = 
+      let cells = column.Cells() |> Seq.map(fun cell -> XlCell(cell))
+      (cells :> IEnumerable).GetEnumerator()
+    member __.GetEnumerator(): IEnumerator<XlCell> = 
+      let cells = column.Cells() |> Seq.map(fun cell -> XlCell(cell))
+      cells.GetEnumerator()
+    
