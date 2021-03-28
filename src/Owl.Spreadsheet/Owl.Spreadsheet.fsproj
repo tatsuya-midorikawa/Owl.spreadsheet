@@ -12,6 +12,7 @@
     <Compile Include="Values\Address.fs" />
     <Compile Include="Values\Cell.fs" />
     <Compile Include="Values\Cells.fs" />
+    <Compile Include="Values\Column.fs" />
     <Compile Include="Values\Range.fs" />
     <Compile Include="Functions\ExcelFunction.fs" />
     <Compile Include="Worksheet.fs" />

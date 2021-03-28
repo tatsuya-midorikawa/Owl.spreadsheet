@@ -72,6 +72,7 @@ type Cell internal (cell: IXLCell) =
     
   member __.raw with get() = cell
   member __.value with get() = cell.Value and set(value) = cell.Value <- value
+  member __.worksheet with get() = cell.Worksheet
   member __.get() = __.value
   member __.get<'T>() = 
     match typeof<'T> with
