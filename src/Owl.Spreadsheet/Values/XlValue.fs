@@ -32,10 +32,15 @@ type XlCell internal (cell: IXLCell) =
   member __.set_formula(value: string) = cell.FormulaA1 <- value
   member __.get_formula_r1c1() = cell.FormulaR1C1
   member __.set_formula_r1c1(value: string) = cell.FormulaR1C1 <- value
+  member __.row_number with get() = cell.Address.RowNumber
+  member __.column_number with get() = cell.Address.ColumnNumber
+  // TODO
+  member __.style with get() = cell.Style
 
   member __.column with get() = XlColumn(cell.WorksheetColumn())
   member __.row with get() = XlRow(cell.WorksheetRow())
 
+  member __.delete(option: ShiftDeleted) = cell.Delete(option)
   member __.clear(?options: ClearOption) = match options with Some opt -> cell.Clear(opt) | None -> cell.Clear()
   member __.left() = XlCell(cell.CellLeft())
   member __.left(step: int) = XlCell(cell.CellLeft(step))
@@ -49,9 +54,9 @@ type XlCell internal (cell: IXLCell) =
   member __.copy_from(other_cell: IXLCell) = XlCell(cell.CopyFrom(other_cell))
   member __.copy_from(other_cell: XlCell) = XlCell(cell.CopyFrom(other_cell.raw))
   member __.copy_from(other_cell: string) = XlCell(cell.CopyFrom(other_cell))
-  member __.copy_to(target: IXLCell) = XlCell(cell.CopyFrom(target))
-  member __.copy_to(target: XlCell) = XlCell(cell.CopyFrom(target.raw))
-  member __.copy_to(target: string) = XlCell(cell.CopyFrom(target))
+  member __.copy_to(target: IXLCell) = XlCell(cell.CopyTo(target))
+  member __.copy_to(target: XlCell) = XlCell(cell.CopyTo(target.raw))
+  member __.copy_to(target: string) = XlCell(cell.CopyTo(target))
 
   member __.insert_cells_above(number_of_rows: int) = XlCells(cell.InsertCellsAbove number_of_rows)
   member __.insert_cells_after(number_of_columns: int) = XlCells(cell.InsertCellsAfter number_of_columns)
@@ -73,6 +78,8 @@ and XlCells internal (cells: IXLCells) =
   member __.fx(value: obj) = cells.FormulaA1 <- value.ToString()
   member __.set_formula(value: string) = cells.FormulaA1 <- value
   member __.set_formula_r1c1(value: string) = cells.FormulaR1C1 <- value
+  // TODO
+  member __.style with get() = cells.Style
   
   member __.clear(?options: ClearOption) = match options with Some opt -> cells.Clear(opt) | None -> cells.Clear()
   member __.delete_comments() = cells.DeleteComments()
@@ -99,6 +106,8 @@ and XlRow internal (row: IXLRow) =
   member __.last_cell with get() = XlCell(row.LastCell())
   member __.last_cell_used with get() = XlCell(row.LastCellUsed())
   member __.row_number with get() = row.RowNumber()
+  // TODO
+  member __.style with get() = row.Style
 
   member __.set(value) = __.value <- box value
   member __.fx(value: obj) = row.FormulaA1 <- value.ToString()
@@ -122,6 +131,7 @@ and XlRow internal (row: IXLRow) =
   member __.adjust(start_column: int, min_height: float, max_height: float) = XlRow(row.AdjustToContents(start_column, min_height, max_height))
   member __.adjust(start_column: int, end_column: int, min_height: float, max_height: float) = XlRow(row.AdjustToContents(start_column, end_column, min_height, max_height))
 
+  member __.delete() = row.Delete()
   member __.clear(?options: ClearOption) = match options with Some opt -> row.Clear(opt) | None -> row.Clear()
   member __.hide() = row.Hide()
   member __.unhide() = row.Unhide()
@@ -153,7 +163,9 @@ and XlRows internal (rows: IXLRows) =
   member internal __.raw with get() = rows
   member __.cells with get() = XlCells(rows.Cells())
   member __.used_cells with get() = XlCells(rows.CellsUsed())
-  
+  // TODO
+  member __.style with get() = rows.Style
+
   member __.adjust() = XlRows(rows.AdjustToContents())
   member __.adjust(start_column: int) = XlRows(rows.AdjustToContents(start_column))
   member __.adjust(start_column: int, end_column: int) = XlRows(rows.AdjustToContents(start_column, end_column))
@@ -184,7 +196,75 @@ and XlRows internal (rows: IXLRows) =
     member __.GetEnumerator(): IEnumerator<XlRow> =
       let rs = rows |> Seq.map(fun row -> XlRow(row))
       rs.GetEnumerator()
+      
 
+
+and XlRangeRow internal (range: IXLRangeRow) =
+  member internal __.raw with get() = range
+  member __.value with set(value) = range.Value <- value
+  member __.first_cell with get() = range.FirstCell() |> XlCell
+  member __.first_cell_used with get() = range.FirstCellUsed() |> XlCell
+  member __.last_cell with get() = range.LastCell() |> XlCell
+  member __.last_cell_used with get() = range.LastCellUsed() |> XlCell
+  member __.row_number with get() = range.RowNumber()
+  member __.row_span with get() = range.RangeAddress.RowSpan
+  member __.column_span with get() = range.RangeAddress.ColumnSpan
+  // TODO
+  member __.style with get() = range.Style
+
+  member __.fx(value: obj) = range.FormulaA1 <- value.ToString()
+  member __.set(value) = __.value <- box value
+  member __.set_formula(value: string) = range.FormulaA1 <- value
+  member __.set_formula_r1c1(value: string) = range.FormulaR1C1 <- value
+  member __.cell(column_number: int) = range.Cell(column_number) |> XlCell
+  member __.cell(column_number: string) = range.Cell(column_number) |> XlCell
+  member __.cells(first_column: int, last_column:  int) = range.Cells $"%d{first_column}:%d{last_column}" |> XlCells
+  member __.cells(cells_in_row: string) = range.Cells cells_in_row |> XlCells
+
+  member __.row(start': int, end': int) = range.Row(start', end') |> XlRangeRow
+  member __.row(start': IXLCell, end': IXLCell) = range.Row(start', end') |> XlRangeRow
+  member __.row(start': XlCell, end': XlCell) = range.Row(start'.raw, end'.raw) |> XlRangeRow
+  member __.above() = range.RowAbove() |> XlRangeRow
+  member __.above(step: int) = range.RowAbove(step) |> XlRangeRow
+  member __.below() = range.RowBelow() |> XlRangeRow
+  member __.below(step: int) = range.RowBelow(step) |> XlRangeRow
+
+  member __.insert_cells_after(number_of_rows: int) = range.InsertCellsAfter(number_of_rows) |> XlCells
+  member __.insert_cells_after(number_of_rows: int, expand_range: bool) = range.InsertCellsAfter(number_of_rows, expand_range) |> XlCells
+  member __.insert_cells_before(number_of_rows: int) = range.InsertCellsBefore(number_of_rows) |> XlCells
+  member __.insert_cells_before(number_of_rows: int, expand_range: bool) = range.InsertCellsBefore(number_of_rows, expand_range) |> XlCells
+  member __.insert_row_above(number_of_rows: int) = range.InsertRowsAbove(number_of_rows) |> XlRangeRows
+  member __.insert_row_above(number_of_rows: int, expand_range: bool) = range.InsertRowsAbove(number_of_rows, expand_range) |> XlRangeRows
+  member __.insert_row_below(number_of_rows: int) = range.InsertRowsBelow(number_of_rows) |> XlRangeRows
+  member __.insert_row_below(number_of_rows: int, expand_range: bool) = range.InsertRowsBelow(number_of_rows, expand_range) |> XlRangeRows
+  
+  member __.copy_to(target: IXLCell) = range.CopyTo(target) |> XlRangeRow
+  member __.copy_to(target: XlRangeRow) = range.CopyTo(target.raw :> IXLRangeBase) |> XlRangeRow
+  member __.copy_to(target: XlRange) = range.CopyTo(target.raw :> IXLRangeBase) |> XlRangeRow
+  member __.copy_to(target: XlColumn) = range.CopyTo(target.raw :> IXLRangeBase) |> XlRangeRow
+
+  member __.delete(?option: ShiftDeleted) = match option with Some opt -> range.Delete(opt) | None -> range.Delete()
+  member __.clear(?options: ClearOption) = match options with Some opt -> range.Clear(opt) | None -> range.Clear()
+  
+
+
+and XlRangeRows internal (range: IXLRangeRows) =
+  member internal __.raw with get() = range
+  member __.cells with get() = range.Cells() |> XlCells
+  // TODO
+  member __.style with get() = range.Style
+
+  member __.delete() = range.Delete()
+  member __.clear(?options: ClearOption) = match options with Some opt -> range.Clear(opt) | None -> range.Clear()
+  
+  interface IEnumerable<XlRangeRow> with
+    member __.GetEnumerator(): IEnumerator = 
+      let rs = range |> Seq.map(fun row -> XlRangeRow(row))
+      (rs :> IEnumerable).GetEnumerator()
+    member __.GetEnumerator(): IEnumerator<XlRangeRow> =
+      let rs = range |> Seq.map(fun row -> XlRangeRow(row))
+      rs.GetEnumerator()
+  
 
 
 and XlColumn internal (column: IXLColumn) =
@@ -197,6 +277,8 @@ and XlColumn internal (column: IXLColumn) =
   member __.first_cell_used with get() = XlCell(column.FirstCellUsed())
   member __.last_cell with get() = XlCell(column.LastCell())
   member __.last_cell_used with get() = XlCell(column.LastCellUsed())
+  // TODO
+  member __.style with get() = column.Style
 
   member __.set(value) = __.value <- box value
   member __.fx(value: obj) = column.FormulaA1 <- value.ToString()
@@ -250,8 +332,17 @@ and XlColumn internal (column: IXLColumn) =
 // TODO
 and XlColumns internal (columns: IXLColumns) =
   member internal __.raw with get() = columns
-    
+  // TODO
+  member __.style with get() = columns.Style
+  
 
+
+// TODO
+and XlRangeColumns internal (range: IXLRangeRows) =
+  member internal __.raw with get() = range
+  // TODO
+  member __.style with get() = range.Style
+    
 
     
 // TODO
@@ -262,6 +353,8 @@ and XlRange internal (range: IXLRange) =
   member __.first_cell_used with get() = XlCell(range.FirstCellUsed())
   member __.last_cell with get() = XlCell(range.LastCell())
   member __.last_cell_used with get() = XlCell(range.LastCellUsed())
+  // TODO
+  member __.style with get() = range.Style
 
   member __.fx(value: obj) = range.FormulaA1 <- value.ToString()
   member __.set(value) = __.value <- box value
@@ -288,3 +381,5 @@ and XlRange internal (range: IXLRange) =
 // TODO
 and XlTable internal (table: IXLTable) =
   member internal __.raw with get() = table
+  // TODO
+  member __.style with get() = table.Style
