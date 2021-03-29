@@ -13,6 +13,7 @@
     <Compile Include="Values\Address.fs" />
     <Compile Include="Values\XlCell.fs" />
     <Compile Include="Values\XlCells.fs" />
+    <Compile Include="Values\XlRow.fs" />
     <Compile Include="Values\XlColumn.fs" />
     <Compile Include="Values\XlRange.fs" />
     <Compile Include="Functions\XlfuncBuilder.fs" />

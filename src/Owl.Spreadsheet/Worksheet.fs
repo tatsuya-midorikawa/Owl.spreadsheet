@@ -27,11 +27,25 @@ module Worksheet =
     XlColumn(sheet.Column(column))
     
   // TODO
-  let public get_columns (sheet: IXLWorksheet) (from': int) (to': int) =
+  let public get_columns (sheet: IXLWorksheet) (from': int, to': int) =
     sheet.Columns(from', to')
   // TODO
   let public get_columns_at (sheet: IXLWorksheet) (columns: string) =
     sheet.Columns(columns)
   // TODO
-  let public get_columns_by (sheet: IXLWorksheet) (from': string) (to': string) =
+  let public get_columns_by (sheet: IXLWorksheet) (from': string, to': string) =
     sheet.Columns(from', to')
+    
+  let public get_row (sheet: IXLWorksheet) (row: int) =
+    XlRow(sheet.Row(row))
+  
+  // TODO
+  let public get_all_rows (sheet: IXLWorksheet) =
+    sheet.Rows()
+  // TODO
+  let public get_rows (sheet: IXLWorksheet) (first': int, last': int) =
+    sheet.Rows(first', last')
+  // TODO
+  let public get_rows_at (sheet: IXLWorksheet) (rows: string) =
+    sheet.Rows(rows)
+
