@@ -123,8 +123,8 @@ and XlRow internal (row: IXLRow) =
   member __.adjust(start_column: int, end_column: int, min_height: float, max_height: float) = XlRow(row.AdjustToContents(start_column, end_column, min_height, max_height))
 
   member __.clear(?options: ClearOption) = match options with Some opt -> row.Clear(opt) | None -> row.Clear()
-  member __.hide() = XlRow(row.Hide())
-  member __.unhide() = XlRow(row.Unhide())
+  member __.hide() = row.Hide()
+  member __.unhide() = row.Unhide()
 
   member __.group() = XlRow(row.Group())
   member __.group(outline_level: int) = XlRow(row.Group(outline_level))
@@ -149,10 +149,41 @@ and XlRow internal (row: IXLRow) =
     
 
     
-// TODO
 and XlRows internal (rows: IXLRows) =
   member internal __.raw with get() = rows
+  member __.cells with get() = XlCells(rows.Cells())
+  member __.used_cells with get() = XlCells(rows.CellsUsed())
+  
+  member __.adjust() = XlRows(rows.AdjustToContents())
+  member __.adjust(start_column: int) = XlRows(rows.AdjustToContents(start_column))
+  member __.adjust(start_column: int, end_column: int) = XlRows(rows.AdjustToContents(start_column, end_column))
+  member __.adjust(min_height: float, max_height: float) = XlRows(rows.AdjustToContents(min_height, max_height))
+  member __.adjust(start_column: int, min_height: float, max_height: float) = XlRows(rows.AdjustToContents(start_column, min_height, max_height))
+  member __.adjust(start_column: int, end_column: int, min_height: float, max_height: float) = XlRows(rows.AdjustToContents(start_column, end_column, min_height, max_height))
 
+  member __.delete() = rows.Delete()
+  member __.clear(?options: ClearOption) = match options with Some opt -> rows.Clear(opt) | None -> rows.Clear()
+  member __.hide() = rows.Hide()
+  member __.unhide() = rows.Unhide()
+  
+  member __.group() = rows.Group()
+  member __.group(outline_level: int) = rows.Group(outline_level)
+  member __.group(collapse: bool) = rows.Group(collapse)
+  member __.group(outline_level: int, collapse: bool) = rows.Group(outline_level, collapse)
+  member __.ungroup() = rows.Ungroup()
+  member __.ungroup(from_all: bool) = rows.Ungroup(from_all)
+  member __.expand() = rows.Expand()
+  member __.collapse() = rows.Collapse()
+  
+  member __.add_horizontal_pagebreak() = XlRows(rows.AddHorizontalPageBreaks())
+
+  interface IEnumerable<XlRow> with
+    member __.GetEnumerator(): IEnumerator = 
+      let rs = rows |> Seq.map(fun row -> XlRow(row))
+      (rs :> IEnumerable).GetEnumerator()
+    member __.GetEnumerator(): IEnumerator<XlRow> =
+      let rs = rows |> Seq.map(fun row -> XlRow(row))
+      rs.GetEnumerator()
 
 
 
@@ -190,8 +221,8 @@ and XlColumn internal (column: IXLColumn) =
   member __.adjust(start_row: int, end_row: int, min_width: float, max_width: float) = XlColumn(column.AdjustToContents(start_row, end_row, min_width, max_width))
   
   member __.clear(?options: ClearOption) = match options with Some opt -> column.Clear(opt) | None -> column.Clear()
-  member __.hide() = XlColumn(column.Hide())
-  member __.unhide() = XlColumn(column.Unhide())
+  member __.hide() = column.Hide()
+  member __.unhide() = column.Unhide()
 
   member __.group() = XlColumn(column.Group())
   member __.group(outline_level: int) = XlColumn(column.Group(outline_level))
