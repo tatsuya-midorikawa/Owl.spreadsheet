@@ -12,11 +12,7 @@
     <Compile Include="Values\Types.fs" />
     <Compile Include="Values\Exception.fs" />
     <Compile Include="Values\Address.fs" />
-    <Compile Include="Values\XlCell.fs" />
-    <Compile Include="Values\XlCells.fs" />
-    <Compile Include="Values\XlRow.fs" />
-    <Compile Include="Values\XlColumn.fs" />
-    <Compile Include="Values\XlRange.fs" />
+    <Compile Include="Values\XlValue.fs" />
     <Compile Include="Functions\XlfuncBuilder.fs" />
     <Compile Include="Functions\Xlfunc.fs" />
     <Compile Include="Worksheet.fs" />
