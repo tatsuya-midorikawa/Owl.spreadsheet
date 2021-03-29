@@ -29,6 +29,8 @@ type XlColumn internal (column: IXLColumn) =
   member __.left(step: int) = XlColumn(column.ColumnLeft(step))
   member __.right() = XlColumn(column.ColumnRight())
   member __.right(step: int) = XlColumn(column.ColumnRight(step))
+  
+  member __.clear(?options: ClearOption) = match options with Some opt -> column.Clear(opt) | None -> column.Clear()
 
   interface IEnumerable<XlCell> with
     member __.GetEnumerator(): IEnumerator = 

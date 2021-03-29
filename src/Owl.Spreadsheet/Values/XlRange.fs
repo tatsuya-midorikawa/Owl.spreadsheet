@@ -30,3 +30,5 @@ type XlRange internal (range: IXLRange) =
   member __.insert_row_above(number_of_rows: int) = range.InsertRowsAbove(number_of_rows)
   // TODO
   member __.insert_row_below(number_of_rows: int) = range.InsertRowsBelow(number_of_rows)
+  
+  member __.clear(?options: ClearOption) = match options with Some opt -> range.Clear(opt) | None -> range.Clear()

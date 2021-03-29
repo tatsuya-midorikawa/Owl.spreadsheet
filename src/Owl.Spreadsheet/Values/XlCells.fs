@@ -13,6 +13,8 @@ type XlCells internal (cells: IXLCells) =
   member __.fx(value: obj) = cells.FormulaA1 <- value.ToString()
   member __.set_formula(value: string) = cells.FormulaA1 <- value
   member __.set_formula_r1c1(value: string) = cells.FormulaR1C1 <- value
+  
+  member __.clear(?options: ClearOption) = match options with Some opt -> cells.Clear(opt) | None -> cells.Clear()
 
   interface IEnumerable<XlCell> with
     member __.GetEnumerator(): IEnumerator = 

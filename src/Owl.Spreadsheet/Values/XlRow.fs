@@ -25,6 +25,8 @@ type XlRow internal (row: IXLRow) =
   member __.cells(row_range: string) = XlCells(row.Cells row_range)
   member __.cells(row': int) = __.cells(row'.ToString())
   member __.cells(from': int, to': int) = __.cells($"%d{from'}:%d{to'}")
+  
+  member __.clear(?options: ClearOption) = match options with Some opt -> row.Clear(opt) | None -> row.Clear()
 
   interface IEnumerable<XlCell> with
     member __.GetEnumerator(): IEnumerator = 
