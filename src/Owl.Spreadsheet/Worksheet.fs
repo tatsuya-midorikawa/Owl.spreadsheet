@@ -3,6 +3,11 @@
 open System
 open ClosedXML.Excel
 
+type Worksheet (sheet: IXLWorksheet) =
+  member __.Item with get(row: int, column: int) = sheet.Cell(row, column) |> XlCell
+  member __.Item with get(start': string, end': string) = sheet.Range($"{start'}:{end'}") |> XlRange
+  member __.Item with get(address: string) = sheet.Cells(address) |> XlCells
+
 module Worksheet =
   let public get_cell_at (sheet: IXLWorksheet) (address: string) =
     XlCell(sheet.Cell address)
