@@ -38,13 +38,13 @@ module Spreadsheet =
   /// ワークブックから指定の位置に存在するワークシートを取得する
   /// </summary>
   let public get_sheet_at (position: int) (workbook: XLWorkbook) =
-    workbook.Worksheet(position)
+    workbook.Worksheet(position) |> XlWorksheet
 
   /// <summary>
   /// ワークブックから指定のシート名と一致するワークシートを取得する
   /// </summary>
   let public get_sheet_with (name: string) (workbook: XLWorkbook) =
-    workbook.Worksheet(name)
+    workbook.Worksheet(name) |> XlWorksheet
 
   /// <summary>
   /// ワークブックに新規ワークシートを追加する
