@@ -329,13 +329,45 @@ and XlColumn internal (column: IXLColumn) =
       
 
       
-// TODO
 and XlColumns internal (columns: IXLColumns) =
   member internal __.raw with get() = columns
+  member __.cells() = columns.Cells() |> XlCells
+  member __.used_cells() = columns.CellsUsed() |> XlCells
+
   // TODO
   member __.style with get() = columns.Style
+  member __.set_width(width: float) = columns.Width <- width
   
+  member __.adjust() = columns.AdjustToContents() |> XlColumns
+  member __.adjust(start_row: int) = columns.AdjustToContents(start_row) |> XlColumns
+  member __.adjust(start_row: int, end_row: int) = columns.AdjustToContents(start_row, end_row) |> XlColumns
+  member __.adjust(min_width: float, max_width: float) = columns.AdjustToContents(min_width, max_width) |> XlColumns
+  member __.adjust(start_row: int, min_width: float, max_width: float) = columns.AdjustToContents(start_row, min_width, max_width) |> XlColumns
+  member __.adjust(start_row: int, end_row: int, min_width: float, max_width: float) = columns.AdjustToContents(start_row, end_row, min_width, max_width) |> XlColumns
+  
+  member __.delete() = columns.Delete()
+  member __.clear(?options: ClearOption) = match options with Some opt -> columns.Clear(opt) | None -> columns.Clear()
+  member __.hide() = columns.Hide()
+  member __.unhide() = columns.Unhide()
+  
+  member __.group() = columns.Group()
+  member __.group(outline_level: int) = columns.Group(outline_level)
+  member __.group(collapse: bool) = columns.Group(collapse)
+  member __.group(outline_level: int, collapse: bool) = columns.Group(outline_level, collapse)
+  member __.ungroup() = columns.Ungroup()
+  member __.ungroup(from_all: bool) = columns.Ungroup(from_all)
+  member __.expand() = columns.Expand()
+  member __.collapse() = columns.Collapse()
 
+  interface IEnumerable<XlColumn> with
+    member __.GetEnumerator(): IEnumerator = 
+      let columns = columns |> Seq.map(fun column -> XlColumn(column))
+      (columns :> IEnumerable).GetEnumerator()
+    member __.GetEnumerator(): IEnumerator<XlColumn> = 
+      let columns = columns |> Seq.map(fun column -> XlColumn(column))
+      columns.GetEnumerator()
+  
+  
 
 // TODO
 and XlRangeColumns internal (range: IXLRangeRows) =
