@@ -38,26 +38,20 @@ module XlWorksheet =
   let public get_column_at (sheet: XlWorksheet) (column: string) =
     sheet.raw.Column(column) |> XlColumn
     
-  // TODO
   let public get_columns (sheet: XlWorksheet) (from': int, to': int) =
-    sheet.raw.Columns(from', to')
-  // TODO
+    sheet.raw.Columns(from', to') |> XlColumns
   let public get_columns_at (sheet: XlWorksheet) (columns: string) =
-    sheet.raw.Columns(columns)
-  // TODO
+    sheet.raw.Columns(columns) |> XlColumns
   let public get_columns_by (sheet: XlWorksheet) (from': string, to': string) =
-    sheet.raw.Columns(from', to')
+    sheet.raw.Columns(from', to') |> XlColumns
     
   let public get_row (sheet: XlWorksheet) (row: int) =
-    XlRow(sheet.raw.Row(row))
+    sheet.raw.Row(row) |> XlRow
   
-  // TODO
   let public get_all_rows (sheet: XlWorksheet) =
-    sheet.raw.Rows()
-  // TODO
+    sheet.raw.Rows() |> XlRows
   let public get_rows (sheet: XlWorksheet) (first': int, last': int) =
-    sheet.raw.Rows(first', last')
-  // TODO
+    sheet.raw.Rows(first', last') |> XlRows
   let public get_rows_at (sheet: XlWorksheet) (rows: string) =
-    sheet.raw.Rows(rows)
+    sheet.raw.Rows(rows) |> XlRows
 
