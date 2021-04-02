@@ -597,6 +597,38 @@ and XlPivotTable internal (table: IXLPivotTable) =
 // TODO
 and XlStyle internal (style: IXLStyle) =
   member internal __.raw with get() = style
+  member __.alignment with get() = style.Alignment |> XlAlignment
+
+  
+and XlAlignment internal (align: IXLAlignment) =
+  member internal __.raw with get() = align
+  member __.top_to_bottom with get() = align.TopToBottom
+  member __.text_rotation with get() = align.TextRotation
+  member __.shrink_to_fit with get() = align.ShrinkToFit
+  member __.relative_indent with get() = align.RelativeIndent
+  member __.justify_lastline with get() = align.JustifyLastLine
+  member __.indent with get() = align.Indent
+  member __.wrap_text with get() = align.WrapText
+  member __.reading_order with get() : XlAlignmentReadingOrderValues = align.ReadingOrder
+  member __.vertical with get() : XlAlignmentVerticalValues = align.Vertical
+  member __.horizontal with get() : XlAlignmentHorizontalValues = align.Horizontal
+
+  member __.set_top_to_bottom(value: bool) = align.TopToBottom <- value
+  member __.set_text_rotation(value: int) = align.TextRotation <- value
+  member __.set_shrink_to_fit(value: bool) = align.ShrinkToFit <- value
+  member __.set_relative_indent(value: int) = align.RelativeIndent <- value
+  member __.set_justify_lastline(value: bool) = align.JustifyLastLine <- value
+  member __.set_indent(value: int) = align.Indent <- value
+  member __.set_wrap_text(value: bool) = align.WrapText <- value
+  member __.set_reading_order(value: XlAlignmentReadingOrderValues) = align.ReadingOrder <- value
+  member __.set_vertical(vertical: XlAlignmentVerticalValues) = align.Vertical <- vertical
+  member __.set_horizontal(horizontal: XlAlignmentHorizontalValues) = align.Horizontal <- horizontal
+
+
+
+// TODO
+and XlBorder internal (border: IXLBorder) =
+  member internal __.raw with get() = border
 
 
 
