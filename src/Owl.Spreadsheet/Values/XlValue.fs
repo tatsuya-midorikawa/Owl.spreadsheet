@@ -534,6 +534,7 @@ and XlRange internal (range: IXLRange) =
   member __.delete(option: ShiftDeleted) = range.Delete(option)
 
   
+
 // TODO
 and XlTable internal (table: IXLTable) =
   member internal __.raw with get() = table
