@@ -8,3 +8,4 @@ type CellsUsedOptions = XLCellsUsedOptions
 type XlAlignmentReadingOrderValues = XLAlignmentReadingOrderValues
 type XlAlignmentVerticalValues = XLAlignmentVerticalValues
 type XlAlignmentHorizontalValues = XLAlignmentHorizontalValues
+type XlBorderStyleValues = XLBorderStyleValues

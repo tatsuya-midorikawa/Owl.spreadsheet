@@ -598,6 +598,10 @@ and XlPivotTable internal (table: IXLPivotTable) =
 and XlStyle internal (style: IXLStyle) =
   member internal __.raw with get() = style
   member __.alignment with get() = style.Alignment |> XlAlignment
+  member __.border with get() = style.Border |> XlBorder
+
+  member __.set_alignment(alignment: XlAlignment) = style.Alignment <- alignment.raw
+  member __.set_border(border: XlBorder) = style.Border <- border.raw
 
   
 and XlAlignment internal (align: IXLAlignment) =
@@ -626,10 +630,41 @@ and XlAlignment internal (align: IXLAlignment) =
 
 
 
-// TODO
 and XlBorder internal (border: IXLBorder) =
   member internal __.raw with get() = border
+  member __.diagonal_color with get() = border.DiagonalBorderColor |> XlColor
+  member __.top_color with get() = border.TopBorderColor |> XlColor
+  member __.bottom_color with get() = border.BottomBorderColor |> XlColor
+  member __.left_color with get() = border.LeftBorderColor |> XlColor
+  member __.right_color with get() = border.RightBorderColor |> XlColor
+  member __.diagonal with get() : XlBorderStyleValues = border.DiagonalBorder
+  member __.top with get() : XlBorderStyleValues = border.TopBorder
+  member __.bottom with get() : XlBorderStyleValues = border.BottomBorder
+  member __.left with get() : XlBorderStyleValues = border.LeftBorder
+  member __.right with get() : XlBorderStyleValues = border.RightBorder
+  member __.diagonal_up with get() = border.DiagonalUp
+  member __.diagonal_down with get() = border.DiagonalDown
 
+  member __.set_diagonal_color(color: XlColor) = border.DiagonalBorderColor <- color.raw
+  member __.set_outside_color(color: XlColor) = border.OutsideBorderColor <- color.raw
+  member __.set_inside_color(color: XlColor) = border.InsideBorderColor <- color.raw
+  member __.set_top_color(color: XlColor) = border.TopBorderColor <- color.raw
+  member __.set_bottom_color(color: XlColor) = border.BottomBorderColor <- color.raw
+  member __.set_left_color(color: XlColor) = border.LeftBorderColor <- color.raw
+  member __.set_right_color(color: XlColor) = border.RightBorderColor <- color.raw
+  member __.set_diagonal(value: XlBorderStyleValues) = border.DiagonalBorder <- value
+  member __.set_top(value: XlBorderStyleValues) = border.TopBorder <- value
+  member __.set_bottom(value: XlBorderStyleValues) = border.BottomBorder <- value
+  member __.set_left(value: XlBorderStyleValues) = border.LeftBorder <- value
+  member __.set_right(value: XlBorderStyleValues) = border.RightBorder <- value
+  member __.set_diagonal_up(value: bool) = border.DiagonalUp <- value
+  member __.set_diagonal_down(value: bool) = border.DiagonalDown <- value
+
+
+
+// TODO
+and XlColor internal (color: XLColor) =
+  member internal __.raw with get() = color
 
 
 // TODO
