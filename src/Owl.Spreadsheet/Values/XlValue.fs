@@ -538,11 +538,34 @@ and XlRange internal (range: IXLRange) =
 // TODO
 and XlTable internal (table: IXLTable) =
   member internal __.raw with get() = table
+  member __.name with get() = table.Name
+  member __.fields() = table.Fields |> Seq.map XlTableField
+  member __.header() = table.HeadersRow() |> XlRangeRow
+
+  member __.append(data: DataTable, ?propagate_extra_columns: bool) =
+    let flag = match propagate_extra_columns with Some propagate_extra_columns' -> propagate_extra_columns' | None -> false
+    table.AppendData(data, flag) |> XlRange
+  member __.append(data: seq<'T>, ?propagate_extra_columns: bool) =
+    let flag = match propagate_extra_columns with Some propagate_extra_columns' -> propagate_extra_columns' | None -> false
+    table.AppendData(data, flag) |> XlRange
+  member __.as_datatable() = table.AsNativeDataTable()
+
   // TODO
   member __.style with get() = table.Style
   
+  member __.clear(?options: ClearOption) = 
+    match options with Some opt -> table.Clear(opt) | None -> table.Clear()
+    |> ignore
+  member __.delete(option: ShiftDeleted) = table.Delete(option)
+  member __.delete_comments() = table.DeleteComments()
   
-  
+
+// TODO
+and XlTableField internal (field: IXLTableField) =
+  member internal __.raw with get() = field
+
+
+
 // TODO
 and XlPivotTable internal (table: IXLPivotTable) =
   member internal __.raw with get() = table
