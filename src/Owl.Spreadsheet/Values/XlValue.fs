@@ -604,6 +604,7 @@ and XlStyle internal (style: IXLStyle) =
   member __.set_border(border: XlBorder) = style.Border <- border.raw
 
   
+  
 and XlAlignment internal (align: IXLAlignment) =
   member internal __.raw with get() = align
   member __.top_to_bottom with get() = align.TopToBottom
