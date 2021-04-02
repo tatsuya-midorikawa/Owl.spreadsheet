@@ -386,7 +386,9 @@ and XlRangeColumn internal (range: IXLRangeColumn) =
   
   member __.column(start': int, end': int) = range.Column(start', end') |> XlRangeColumn
   member __.column(start': XlCell, end': XlCell) = range.Column(start'.raw, end'.raw) |> XlRangeColumn
-  member __.used_column(?options: CellsUsedOptions) = (match options with Some opt -> range.ColumnUsed(opt) | None -> range.ColumnUsed()) |> XlRangeColumn
+  member __.used_column(?options: CellsUsedOptions) =
+    match options with Some opt -> range.ColumnUsed(opt) | None -> range.ColumnUsed()
+    |> XlRangeColumn
   member __.left() = range.ColumnLeft() |> XlRangeColumn
   member __.left(step: int) = range.ColumnLeft(step) |> XlRangeColumn
   member __.right() = range.ColumnRight() |> XlRangeColumn
@@ -419,7 +421,9 @@ and XlRangeColumn internal (range: IXLRangeColumn) =
 and XlRangeColumns internal (range: IXLRangeColumns) =
   member internal __.raw with get() = range
   member __.cells() = range.Cells() |> XlCells
-  member __.used_cells(?options: CellsUsedOptions) = (match options with Some opt -> range.CellsUsed(opt) | None -> range.CellsUsed()) |> XlCells
+  member __.used_cells(?options: CellsUsedOptions) = 
+    match options with Some opt -> range.CellsUsed(opt) | None -> range.CellsUsed()
+    |> XlCells
   member __.style with get() = range.Style |> XlStyle
   
   member __.delete() = range.Delete()
@@ -434,15 +438,35 @@ and XlRangeColumns internal (range: IXLRangeColumns) =
       cs.GetEnumerator()
     
 
-// TODO
+
 and XlRange internal (range: IXLRange) =
   member internal __.raw with get() = range
   member __.value with set(value) = range.Value <- value
   member __.first_cell with get() = range.FirstCell() |> XlCell
-  member __.first_cell_used with get() = range.FirstCellUsed() |> XlCell
+  member __.first_used_cell with get() = range.FirstCellUsed() |> XlCell
   member __.last_cell with get() = range.LastCell() |> XlCell
-  member __.last_cell_used with get() = range.LastCellUsed() |> XlCell
+  member __.last_used_cell with get() = range.LastCellUsed() |> XlCell
   member __.style with get() = range.Style |> XlStyle
+  member __.column_count() = range.ColumnCount()
+  member __.row_count() = range.RowCount()
+
+  member __.column(number: int) = range.Column(number) |> XlRangeColumn
+  member __.column(letter: string) = range.Column(letter) |> XlRangeColumn
+  member __.columns(first: int, last: int) = range.Columns(first, last) |> XlRangeColumns
+  member __.columns(columns: string) = range.Columns(columns) |> XlRangeColumns
+  member __.used_columns(?predicate: XlRangeColumn -> bool) =
+    match predicate with
+      | Some predicate' -> range.ColumnsUsed(fun column -> predicate'(XlRangeColumn column))
+      | None -> range.ColumnsUsed()
+    |> XlRangeColumns
+  member __.row(row: int) = range.Row(row) |> XlRangeRow
+  member __.rows(first: int, last: int) = range.Rows(first, last) |> XlRangeRows
+  member __.rows(rows: string) = range.Rows(rows) |> XlRangeRows
+  member __.used_rows(?predicate: XlRangeRow -> bool) =
+    match predicate with
+      | Some predicate' -> range.RowsUsed(fun row -> predicate'(XlRangeRow row))
+      | None -> range.RowsUsed()
+    |> XlRangeRows
 
   member __.fx(value: obj) = range.FormulaA1 <- value.ToString()
   member __.set(value) = __.value <- box value
@@ -453,13 +477,61 @@ and XlRange internal (range: IXLRange) =
   member __.cells(from': Address, to': Address) = range.Cells $"%s{from'.to_string()}:%s{to'.to_string()}" |> XlCells
   member __.cells(from': int * int, to':  int * int) = range.Cells $"%s{from'.to_address()}:%s{to'.to_address()}" |> XlCells
   member __.cells(address: string) = range.Cells address |> XlCells
-  member __.insert_column_after(number_of_columns: int) = range.InsertColumnsAfter(number_of_columns) |> XlRangeColumns
-  member __.insert_column_before(number_of_columns: int) = range.InsertColumnsBefore(number_of_columns) |> XlRangeColumns
-  member __.insert_row_above(number_of_rows: int) = range.InsertRowsAbove(number_of_rows) |> XlRangeRows
-  member __.insert_row_below(number_of_rows: int) = range.InsertRowsBelow(number_of_rows) |> XlRangeRows
+  member __.insert_after(number_of_columns: int) = range.InsertColumnsAfter(number_of_columns) |> XlRangeColumns
+  member __.insert_before(number_of_columns: int) = range.InsertColumnsBefore(number_of_columns) |> XlRangeColumns
+  member __.insert_above(number_of_rows: int) = range.InsertRowsAbove(number_of_rows) |> XlRangeRows
+  member __.insert_below(number_of_rows: int) = range.InsertRowsBelow(number_of_rows) |> XlRangeRows
   
+  member __.find_column(predicate: XlRangeColumn -> bool) = range.FindColumn(fun column -> predicate(XlRangeColumn column)) |> XlRangeColumn
+  member __.find_row(predicate: XlRangeRow -> bool) = range.FindRow(fun row -> predicate(XlRangeRow row)) |> XlRangeRow
+  member __.first_column(?predicate: XlRangeColumn -> bool) =
+    match predicate with
+      | Some predicate' -> range.FirstColumn(fun column -> predicate'(XlRangeColumn column))
+      | None -> range.FirstColumn()
+    |> XlRangeColumn
+  member __.first_used_column(?predicate: XlRangeColumn -> bool) =
+    match predicate with
+      | Some predicate' -> range.FirstColumnUsed(fun column -> predicate'(XlRangeColumn column))
+      | None -> range.FirstColumnUsed()
+    |> XlRangeColumn
+  member __.first_row(?predicate: XlRangeRow -> bool) =
+    match predicate with
+      | Some predicate' -> range.FirstRow(fun row -> predicate'(XlRangeRow row))
+      | None -> range.FirstRow()
+    |> XlRangeRow
+  member __.first_used_row(?predicate: XlRangeRow -> bool) =
+    match predicate with
+      | Some predicate' -> range.FirstRowUsed(fun row -> predicate'(XlRangeRow row))
+      | None -> range.FirstRowUsed()
+    |> XlRangeRow
+  member __.last_column(?predicate: XlRangeColumn -> bool) =
+    match predicate with
+      | Some predicate' -> range.LastColumn(fun column -> predicate'(XlRangeColumn column))
+      | None -> range.LastColumn()
+    |> XlRangeColumn
+  member __.last_used_column(?predicate: XlRangeColumn -> bool) =
+    match predicate with
+      | Some predicate' -> range.LastColumnUsed(fun column -> predicate'(XlRangeColumn column))
+      | None -> range.LastColumnUsed()
+    |> XlRangeColumn
+  member __.last_row(?predicate: XlRangeRow -> bool) =
+    match predicate with
+      | Some predicate' -> range.LastRow(fun row -> predicate'(XlRangeRow row))
+      | None -> range.LastRow()
+    |> XlRangeRow
+  member __.last_used_row(?predicate: XlRangeRow -> bool) =
+    match predicate with
+      | Some predicate' -> range.LastRowUsed(fun row -> predicate'(XlRangeRow row))
+      | None -> range.LastRowUsed()
+    |> XlRangeRow
+
+
+  member __.create_table(?name: string) =
+    match name with Some name' -> range.CreateTable(name') | None -> range.CreateTable()
+    |> XlTable
+
   member __.clear(?options: ClearOption) = match options with Some opt -> range.Clear(opt) | None -> range.Clear()
-  
+  member __.delete(option: ShiftDeleted) = range.Delete(option)
 
   
 // TODO
