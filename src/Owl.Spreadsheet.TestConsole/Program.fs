@@ -1,6 +1,6 @@
 ﻿open Owl.Spreadsheet
 open Owl.Spreadsheet.Spreadsheet
-open Owl.Spreadsheet.Worksheet
+open Owl.Spreadsheet.XlWorksheet
 open type Owl.Spreadsheet.Xlfunc
 //open Owl.Spreadsheet.Convert
 //open type Owl.Spreadsheet.XlfuncBuilder
