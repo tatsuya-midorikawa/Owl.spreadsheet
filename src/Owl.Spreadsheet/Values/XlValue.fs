@@ -538,6 +538,7 @@ and XlRange internal (range: IXLRange) =
 // TODO
 and XlTable internal (table: IXLTable) =
   member internal __.raw with get() = table
+  member __.auto_filter with get() = table.AutoFilter |> XlAutoFilter
   member __.name with get() = table.Name
   member __.fields() = table.Fields |> Seq.map XlTableField
   member __.header() = table.HeadersRow() |> XlRangeRow
@@ -555,10 +556,16 @@ and XlTable internal (table: IXLTable) =
     let flag = match propagate_extra_columns with Some propagate_extra_columns' -> propagate_extra_columns' | None -> false
     table.ReplaceData(data, flag) |> ignore
   member __.as_datatable() = table.AsNativeDataTable()
+  member __.as_range() = table :> IXLRange |> XlRange
 
-  // TODO
-  member __.style with get() = table.Style
-  
+  member __.style with get() = table.Style |> XlStyle
+  member __.resize(first: XlCell, last: XlCell) = table.Resize(first.raw, last.raw) |> ignore
+  member __.resize(first: IXLCell, last: IXLCell) = table.Resize(first, last) |> ignore
+  member __.resize(first_address: string, last_address: string) = table.Resize(first_address, last_address) |> ignore
+  member __.resize(first_row: int, first_column: int, last_row: int, last_column: int) = table.Resize(first_row, first_column, last_row, last_column) |> ignore
+
+  member __.set_auto_filter() = table.SetAutoFilter() |> ignore
+
   member __.clear(?options: ClearOption) = 
     match options with Some opt -> table.Clear(opt) | None -> table.Clear()
     |> ignore
@@ -582,3 +589,9 @@ and XlPivotTable internal (table: IXLPivotTable) =
 // TODO
 and XlStyle internal (style: IXLStyle) =
   member internal __.raw with get() = style
+
+
+
+// TODO
+and XlAutoFilter internal (filter: IXLAutoFilter) =
+  member internal __.raw with get() = filter
