@@ -203,12 +203,13 @@ and XlRangeRow internal (range: IXLRangeRow) =
   member internal __.raw with get() = range
   member __.value with set(value) = range.Value <- value
   member __.first_cell with get() = range.FirstCell() |> XlCell
-  member __.first_cell_used with get() = range.FirstCellUsed() |> XlCell
+  member __.first_used_cell with get() = range.FirstCellUsed() |> XlCell
   member __.last_cell with get() = range.LastCell() |> XlCell
-  member __.last_cell_used with get() = range.LastCellUsed() |> XlCell
+  member __.last_used_cell with get() = range.LastCellUsed() |> XlCell
   member __.row_number with get() = range.RowNumber()
   member __.row_span with get() = range.RangeAddress.RowSpan
   member __.column_span with get() = range.RangeAddress.ColumnSpan
+  member __.cell_count with get() = range.CellCount()
   // TODO
   member __.style with get() = range.Style
 
@@ -220,10 +221,12 @@ and XlRangeRow internal (range: IXLRangeRow) =
   member __.cell(column_number: string) = range.Cell(column_number) |> XlCell
   member __.cells(first_column: int, last_column:  int) = range.Cells $"%d{first_column}:%d{last_column}" |> XlCells
   member __.cells(cells_in_row: string) = range.Cells cells_in_row |> XlCells
+  member __.as_range() = range.AsRange() |> XlRange
 
   member __.row(start': int, end': int) = range.Row(start', end') |> XlRangeRow
   member __.row(start': IXLCell, end': IXLCell) = range.Row(start', end') |> XlRangeRow
   member __.row(start': XlCell, end': XlCell) = range.Row(start'.raw, end'.raw) |> XlRangeRow
+  member __.used_row(?options: CellsUsedOptions) = (match options with Some opt -> range.RowUsed(opt) | None -> range.RowUsed()) |> XlRangeRow
   member __.above() = range.RowAbove() |> XlRangeRow
   member __.above(step: int) = range.RowAbove(step) |> XlRangeRow
   member __.below() = range.RowBelow() |> XlRangeRow
@@ -237,6 +240,8 @@ and XlRangeRow internal (range: IXLRangeRow) =
   member __.insert_row_above(number_of_rows: int, expand_range: bool) = range.InsertRowsAbove(number_of_rows, expand_range) |> XlRangeRows
   member __.insert_row_below(number_of_rows: int) = range.InsertRowsBelow(number_of_rows) |> XlRangeRows
   member __.insert_row_below(number_of_rows: int, expand_range: bool) = range.InsertRowsBelow(number_of_rows, expand_range) |> XlRangeRows
+  
+  member __.create_pivot(target: XlCell, name: string) = range.CreatePivotTable(target.raw, name) |> XlPivotTable
   
   member __.copy_to(target: IXLCell) = range.CopyTo(target) |> XlRangeRow
   member __.copy_to(target: XlRangeRow) = range.CopyTo(target.raw :> IXLRangeBase) |> XlRangeRow
@@ -370,13 +375,66 @@ and XlColumns internal (columns: IXLColumns) =
   
 
 // TODO
-and XlRangeColumns internal (range: IXLRangeRows) =
+and XlRangeColumn internal (range: IXLRangeColumn) =
   member internal __.raw with get() = range
+  member __.value with set(value) = range.Value <- value
+  member __.first_cell with get() = range.FirstCell() |> XlCell
+  member __.first_used_cell with get() = range.FirstCellUsed() |> XlCell
+  member __.last_cell with get() = range.LastCell() |> XlCell
+  member __.last_used_cell with get() = range.LastCellUsed() |> XlCell
+  member __.column_number with get() = range.ColumnNumber()
+  member __.row_span with get() = range.RangeAddress.RowSpan
+  member __.column_span with get() = range.RangeAddress.ColumnSpan
+  member __.cell_count with get() = range.CellCount()
   // TODO
   member __.style with get() = range.Style
     
+  member __.as_table() = range.AsTable() |> XlTable
+  member __.as_table(name: string) = range.AsTable(name) |> XlTable
+  member __.cell(row_number: int) = range.Cell(row_number) |> XlCell
+  member __.cells(first_row: int, last_row: int) = range.Cells(first_row, last_row) |> XlCells
+  member __.cells(cell_in_column: string) = range.Cells(cell_in_column) |> XlCells
+  
+  member __.column(start': int, end': int) = range.Column(start', end') |> XlRangeColumn
+  member __.column(start': XlCell, end': XlCell) = range.Column(start'.raw, end'.raw) |> XlRangeColumn
+  member __.used_column(?options: CellsUsedOptions) = (match options with Some opt -> range.ColumnUsed(opt) | None -> range.ColumnUsed()) |> XlRangeColumn
+  member __.left() = range.ColumnLeft() |> XlRangeColumn
+  member __.left(step: int) = range.ColumnLeft(step) |> XlRangeColumn
+  member __.right() = range.ColumnRight() |> XlRangeColumn
+  member __.right(step: int) = range.ColumnRight(step) |> XlRangeColumn
+  
+  member __.insert_cells_above(number_of_rows: int) = range.InsertCellsAbove(number_of_rows) |> XlCells
+  member __.insert_cells_above(number_of_rows: int, expand_range: bool) = range.InsertCellsAbove(number_of_rows, expand_range) |> XlCells
+  member __.insert_cells_below(number_of_rows: int) = range.InsertCellsBelow(number_of_rows) |> XlCells
+  member __.insert_cells_below(number_of_rows: int, expand_range: bool) = range.InsertCellsBelow(number_of_rows, expand_range) |> XlCells
+  member __.insert_column_after(number_of_columns: int) = range.InsertColumnsAfter(number_of_columns) |> XlRangeColumns
+  member __.insert_column_after(number_of_columns: int, expand_range: bool) = range.InsertColumnsAfter(number_of_columns, expand_range) |> XlRangeColumns
+  member __.insert_column_before(number_of_columns: int) = range.InsertColumnsBefore(number_of_columns) |> XlRangeColumns
+  member __.insert_column_before(number_of_columns: int, expand_range: bool) = range.InsertColumnsBefore(number_of_columns, expand_range) |> XlRangeColumns
+
+  member __.copy_to(target: XlRangeColumn) = range.CopyTo(target.raw :> IXLRangeBase) |> XlRangeColumn
+  member __.copy_to(target: XlRange) = range.CopyTo(target.raw :> IXLRangeBase) |> XlRangeColumn
+  member __.copy_to(target: XlCell) = range.CopyTo(target.raw) |> XlRangeColumn
+  member __.copy_to(target: IXLCell) = range.CopyTo(target) |> XlRangeColumn
+
+  member __.create_table() = range.CreateTable() |> XlTable
+  member __.create_table(name: string) = range.CreateTable(name) |> XlTable
+  member __.create_pivot(target: XlCell, name: string) = range.CreatePivotTable(target.raw, name) |> XlPivotTable
+
+  member __.clear() = range.Clear()
+  member __.delete() = range.Delete()
+  member __.delete_comments() = range.DeleteComments()
+
+
+
+// TODO
+and XlRangeColumns internal (range: IXLRangeColumns) =
+  member internal __.raw with get() = range
+  // TODO
+  member __.style with get() = range.Style
 
     
+
 // TODO
 and XlRange internal (range: IXLRange) =
   member internal __.raw with get() = range
@@ -415,3 +473,10 @@ and XlTable internal (table: IXLTable) =
   member internal __.raw with get() = table
   // TODO
   member __.style with get() = table.Style
+  
+  
+
+  
+// TODO
+and XlPivotTable internal (table: IXLPivotTable) =
+  member internal __.raw with get() = table
