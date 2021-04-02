@@ -36,43 +36,43 @@ type XlCell internal (cell: IXLCell) =
   member __.column_number with get() = cell.Address.ColumnNumber
   member __.style with get() = cell.Style |> XlStyle
 
-  member __.column with get() = XlColumn(cell.WorksheetColumn())
-  member __.row with get() = XlRow(cell.WorksheetRow())
+  member __.column with get() = cell.WorksheetColumn() |> XlColumn
+  member __.row with get() = cell.WorksheetRow() |> XlRow
 
   member __.delete(option: ShiftDeleted) = cell.Delete(option)
   member __.clear(?options: ClearOption) = match options with Some opt -> cell.Clear(opt) | None -> cell.Clear()
-  member __.left() = XlCell(cell.CellLeft())
-  member __.left(step: int) = XlCell(cell.CellLeft(step))
-  member __.right() = XlCell(cell.CellRight())
-  member __.right(step: int) = XlCell(cell.CellRight(step))
-  member __.above() = XlCell(cell.CellAbove())
-  member __.above(step: int) = XlCell(cell.CellAbove(step))
-  member __.below() = XlCell(cell.CellBelow())
-  member __.below(step: int) = XlCell(cell.CellBelow(step))
+  member __.left() = cell.CellLeft() |> XlCell
+  member __.left(step: int) = cell.CellLeft(step) |> XlCell
+  member __.right() = cell.CellRight() |> XlCell
+  member __.right(step: int) =cell.CellRight(step) |> XlCell
+  member __.above() = cell.CellAbove() |> XlCell
+  member __.above(step: int) = cell.CellAbove(step) |> XlCell
+  member __.below() = cell.CellBelow() |> XlCell
+  member __.below(step: int) = cell.CellBelow(step) |> XlCell
 
-  member __.copy_from(other_cell: IXLCell) = XlCell(cell.CopyFrom(other_cell))
-  member __.copy_from(other_cell: XlCell) = XlCell(cell.CopyFrom(other_cell.raw))
-  member __.copy_from(other_cell: string) = XlCell(cell.CopyFrom(other_cell))
-  member __.copy_to(target: IXLCell) = XlCell(cell.CopyTo(target))
-  member __.copy_to(target: XlCell) = XlCell(cell.CopyTo(target.raw))
-  member __.copy_to(target: string) = XlCell(cell.CopyTo(target))
+  member __.copy_from(other_cell: IXLCell) = cell.CopyFrom(other_cell) |> XlCell
+  member __.copy_from(other_cell: XlCell) = cell.CopyFrom(other_cell.raw) |> XlCell
+  member __.copy_from(other_cell: string) = cell.CopyFrom(other_cell) |> XlCell
+  member __.copy_to(target: IXLCell) = cell.CopyTo(target) |> XlCell
+  member __.copy_to(target: XlCell) = cell.CopyTo(target.raw) |> XlCell
+  member __.copy_to(target: string) = cell.CopyTo(target) |> XlCell
 
-  member __.insert_cells_above(number_of_rows: int) = XlCells(cell.InsertCellsAbove number_of_rows)
-  member __.insert_cells_after(number_of_columns: int) = XlCells(cell.InsertCellsAfter number_of_columns)
-  member __.insert_cells_before(number_of_columns: int) = XlCells(cell.InsertCellsBefore number_of_columns)
-  member __.insert_cells_below(number_of_rows: int) = XlCells(cell.InsertCellsBelow number_of_rows)
+  member __.insert_cells_above(number_of_rows: int) = cell.InsertCellsAbove number_of_rows |> XlCells
+  member __.insert_cells_after(number_of_columns: int) = cell.InsertCellsAfter number_of_columns |> XlCells
+  member __.insert_cells_before(number_of_columns: int) = cell.InsertCellsBefore number_of_columns |> XlCells
+  member __.insert_cells_below(number_of_rows: int) = cell.InsertCellsBelow number_of_rows |> XlCells
 
-  member __.insert_table(data: DataTable) = XlTable(cell.InsertTable(data))
-  member __.insert_table(data: DataTable, create_table: bool) = XlTable(cell.InsertTable(data, create_table))
-  member __.insert_table(data: DataTable, table_name: string) = XlTable(cell.InsertTable(data, table_name))
-  member __.insert_table(data: DataTable, table_name: string, create_table: bool) = XlTable(cell.InsertTable(data, table_name, create_table))
+  member __.insert_table(data: DataTable) = cell.InsertTable(data) |> XlTable
+  member __.insert_table(data: DataTable, create_table: bool) = cell.InsertTable(data, create_table) |> XlTable
+  member __.insert_table(data: DataTable, table_name: string) = cell.InsertTable(data, table_name) |> XlTable
+  member __.insert_table(data: DataTable, table_name: string, create_table: bool) = cell.InsertTable(data, table_name, create_table) |> XlTable
 
 
 
 and XlCells internal (cells: IXLCells) =
   member internal __.raw with get() = cells
   member __.value with set(value) = cells.Value <- value
-  member __.get() = cells |> Seq.map(fun cell -> XlCell(cell))
+  member __.get() = cells |> Seq.map XlCell
   member __.set(value) = __.value <- box value
   member __.fx(value: obj) = cells.FormulaA1 <- value.ToString()
   member __.set_formula(value: string) = cells.FormulaA1 <- value
@@ -85,10 +85,10 @@ and XlCells internal (cells: IXLCells) =
 
   interface IEnumerable<XlCell> with
     member __.GetEnumerator(): IEnumerator = 
-      let cells = cells |> Seq.map(fun cell -> XlCell(cell))
+      let cells = cells |> Seq.map XlCell
       (cells :> IEnumerable).GetEnumerator()
     member __.GetEnumerator(): IEnumerator<XlCell> = 
-      let cells = cells |> Seq.map(fun cell -> XlCell(cell))
+      let cells = cells |> Seq.map XlCell
       cells.GetEnumerator()
 
 
@@ -99,10 +99,10 @@ and XlRow internal (row: IXLRow) =
   member __.cell_count with get() = row.CellCount
   member __.worksheet with get() = row.Worksheet
   member __.height with get() = row.Height
-  member __.first_cell with get() = XlCell(row.FirstCell())
-  member __.first_cell_used with get() = XlCell(row.FirstCellUsed())
-  member __.last_cell with get() = XlCell(row.LastCell())
-  member __.last_cell_used with get() = XlCell(row.LastCellUsed())
+  member __.first_cell with get() = row.FirstCell() |> XlCell
+  member __.first_cell_used with get() = row.FirstCellUsed() |> XlCell
+  member __.last_cell with get() = row.LastCell() |> XlCell
+  member __.last_cell_used with get() = row.LastCellUsed() |> XlCell
   member __.row_number with get() = row.RowNumber()
   member __.style with get() = row.Style |> XlStyle
 
@@ -110,64 +110,64 @@ and XlRow internal (row: IXLRow) =
   member __.fx(value: obj) = row.FormulaA1 <- value.ToString()
   member __.set_formula(value: string) = row.FormulaA1 <- value
   member __.set_formula_r1c1(value: string) = row.FormulaR1C1 <- value
-  member __.cell(row': int) = XlCell(row.Cell row')
-  member __.cells() = XlCells(row.Cells())
-  member __.cells(row_range: string) = XlCells(row.Cells row_range)
+  member __.cell(row': int) = row.Cell row' |> XlCell
+  member __.cells() = row.Cells() |> XlCells
+  member __.cells(row_range: string) = row.Cells row_range |> XlCells
   member __.cells(row': int) = __.cells(row'.ToString())
   member __.cells(from': int, to': int) = __.cells($"%d{from'}:%d{to'}")
 
-  member __.above() = XlRow(row.RowAbove())
-  member __.above(step: int) = XlRow(row.RowAbove(step))
-  member __.below() = XlRow(row.RowBelow())
-  member __.below(step: int) = XlRow(row.RowBelow(step))
+  member __.above() = row.RowAbove() |> XlRow
+  member __.above(step: int) = row.RowAbove(step) |> XlRow
+  member __.below() = row.RowBelow() |> XlRow
+  member __.below(step: int) = row.RowBelow(step) |> XlRow
   
-  member __.adjust() = XlRow(row.AdjustToContents())
-  member __.adjust(start_column: int) = XlRow(row.AdjustToContents(start_column))
-  member __.adjust(start_column: int, end_column: int) = XlRow(row.AdjustToContents(start_column, end_column))
-  member __.adjust(min_height: float, max_height: float) = XlRow(row.AdjustToContents(min_height, max_height))
-  member __.adjust(start_column: int, min_height: float, max_height: float) = XlRow(row.AdjustToContents(start_column, min_height, max_height))
-  member __.adjust(start_column: int, end_column: int, min_height: float, max_height: float) = XlRow(row.AdjustToContents(start_column, end_column, min_height, max_height))
+  member __.adjust() = row.AdjustToContents() |> XlRow
+  member __.adjust(start_column: int) = row.AdjustToContents(start_column) |> XlRow
+  member __.adjust(start_column: int, end_column: int) = row.AdjustToContents(start_column, end_column) |> XlRow
+  member __.adjust(min_height: float, max_height: float) = row.AdjustToContents(min_height, max_height) |> XlRow
+  member __.adjust(start_column: int, min_height: float, max_height: float) = row.AdjustToContents(start_column, min_height, max_height) |> XlRow
+  member __.adjust(start_column: int, end_column: int, min_height: float, max_height: float) = row.AdjustToContents(start_column, end_column, min_height, max_height) |> XlRow
 
   member __.delete() = row.Delete()
   member __.clear(?options: ClearOption) = match options with Some opt -> row.Clear(opt) | None -> row.Clear()
   member __.hide() = row.Hide()
   member __.unhide() = row.Unhide()
 
-  member __.group() = XlRow(row.Group())
-  member __.group(outline_level: int) = XlRow(row.Group(outline_level))
-  member __.group(collapse: bool) = XlRow(row.Group(collapse))
-  member __.group(outline_level: int, collapse: bool) = XlRow(row.Group(outline_level, collapse))
-  member __.ungroup() = XlRow(row.Ungroup())
-  member __.ungroup(from_all: bool) = XlRow(row.Ungroup(from_all))
-  member __.expand() = XlRow(row.Expand())
-  member __.collapse() = XlRow(row.Collapse())
+  member __.group() = row.Group() |> XlRow
+  member __.group(outline_level: int) = row.Group(outline_level) |> XlRow
+  member __.group(collapse: bool) = row.Group(collapse) |> XlRow
+  member __.group(outline_level: int, collapse: bool) = row.Group(outline_level, collapse) |> XlRow
+  member __.ungroup() = row.Ungroup() |> XlRow
+  member __.ungroup(from_all: bool) = row.Ungroup(from_all) |> XlRow
+  member __.expand() = row.Expand() |> XlRow
+  member __.collapse() = row.Collapse() |> XlRow
 
-  member __.add_horizontal_pagebreak() = XlRow(row.AddHorizontalPageBreak())
-  member __.insert_above(number_of_rows: int) = XlRows(row.InsertRowsAbove(number_of_rows))
-  member __.insert_below(number_of_rows: int) = XlRows(row.InsertRowsBelow(number_of_rows))
+  member __.add_horizontal_pagebreak() = row.AddHorizontalPageBreak() |> XlRow
+  member __.insert_above(number_of_rows: int) = row.InsertRowsAbove(number_of_rows) |> XlRows
+  member __.insert_below(number_of_rows: int) = row.InsertRowsBelow(number_of_rows) |> XlRows
 
   interface IEnumerable<XlCell> with
     member __.GetEnumerator(): IEnumerator = 
-      let cells = row.Cells() |> Seq.map(fun cell -> XlCell(cell))
+      let cells = row.Cells() |> Seq.map XlCell
       (cells :> IEnumerable).GetEnumerator()
     member __.GetEnumerator(): IEnumerator<XlCell> = 
-      let cells = row.Cells() |> Seq.map(fun cell -> XlCell(cell))
+      let cells = row.Cells() |> Seq.map XlCell
       cells.GetEnumerator()
     
 
     
 and XlRows internal (rows: IXLRows) =
   member internal __.raw with get() = rows
-  member __.cells with get() = XlCells(rows.Cells())
-  member __.used_cells with get() = XlCells(rows.CellsUsed())
+  member __.cells with get() = rows.Cells() |> XlCells
+  member __.used_cells with get() = rows.CellsUsed() |> XlCells
   member __.style with get() = rows.Style |> XlStyle
 
-  member __.adjust() = XlRows(rows.AdjustToContents())
-  member __.adjust(start_column: int) = XlRows(rows.AdjustToContents(start_column))
-  member __.adjust(start_column: int, end_column: int) = XlRows(rows.AdjustToContents(start_column, end_column))
-  member __.adjust(min_height: float, max_height: float) = XlRows(rows.AdjustToContents(min_height, max_height))
-  member __.adjust(start_column: int, min_height: float, max_height: float) = XlRows(rows.AdjustToContents(start_column, min_height, max_height))
-  member __.adjust(start_column: int, end_column: int, min_height: float, max_height: float) = XlRows(rows.AdjustToContents(start_column, end_column, min_height, max_height))
+  member __.adjust() = rows.AdjustToContents() |> XlRows
+  member __.adjust(start_column: int) = rows.AdjustToContents(start_column) |> XlRows
+  member __.adjust(start_column: int, end_column: int) = rows.AdjustToContents(start_column, end_column) |> XlRows
+  member __.adjust(min_height: float, max_height: float) = rows.AdjustToContents(min_height, max_height) |> XlRows
+  member __.adjust(start_column: int, min_height: float, max_height: float) = rows.AdjustToContents(start_column, min_height, max_height) |> XlRows
+  member __.adjust(start_column: int, end_column: int, min_height: float, max_height: float) = rows.AdjustToContents(start_column, end_column, min_height, max_height) |> XlRows
 
   member __.delete() = rows.Delete()
   member __.clear(?options: ClearOption) = match options with Some opt -> rows.Clear(opt) | None -> rows.Clear()
@@ -183,14 +183,14 @@ and XlRows internal (rows: IXLRows) =
   member __.expand() = rows.Expand()
   member __.collapse() = rows.Collapse()
   
-  member __.add_horizontal_pagebreak() = XlRows(rows.AddHorizontalPageBreaks())
+  member __.add_horizontal_pagebreak() = rows.AddHorizontalPageBreaks() |> XlRows
 
   interface IEnumerable<XlRow> with
     member __.GetEnumerator(): IEnumerator = 
-      let rs = rows |> Seq.map(fun row -> XlRow(row))
+      let rs = rows |> Seq.map XlRow
       (rs :> IEnumerable).GetEnumerator()
     member __.GetEnumerator(): IEnumerator<XlRow> =
-      let rs = rows |> Seq.map(fun row -> XlRow(row))
+      let rs = rows |> Seq.map XlRow
       rs.GetEnumerator()
       
 
@@ -258,10 +258,10 @@ and XlRangeRows internal (range: IXLRangeRows) =
   
   interface IEnumerable<XlRangeRow> with
     member __.GetEnumerator(): IEnumerator = 
-      let rs = range |> Seq.map(fun row -> XlRangeRow(row))
+      let rs = range |> Seq.map XlRangeRow
       (rs :> IEnumerable).GetEnumerator()
     member __.GetEnumerator(): IEnumerator<XlRangeRow> =
-      let rs = range |> Seq.map(fun row -> XlRangeRow(row))
+      let rs = range |> Seq.map XlRangeRow
       rs.GetEnumerator()
   
 
@@ -272,57 +272,57 @@ and XlColumn internal (column: IXLColumn) =
   member __.cell_count with get() = column.CellCount
   member __.worksheet with get() = column.Worksheet
   member __.width with get() = column.Width
-  member __.first_cell with get() = XlCell(column.FirstCell())
-  member __.first_cell_used with get() = XlCell(column.FirstCellUsed())
-  member __.last_cell with get() = XlCell(column.LastCell())
-  member __.last_cell_used with get() = XlCell(column.LastCellUsed())
+  member __.first_cell with get() = column.FirstCell() |> XlCell
+  member __.first_cell_used with get() = column.FirstCellUsed() |> XlCell
+  member __.last_cell with get() = column.LastCell() |> XlCell
+  member __.last_cell_used with get() = column.LastCellUsed() |> XlCell
   member __.style with get() = column.Style |> XlStyle
 
   member __.set(value) = __.value <- box value
   member __.fx(value: obj) = column.FormulaA1 <- value.ToString()
   member __.set_formula(value: string) = column.FormulaA1 <- value
   member __.set_formula_r1c1(value: string) = column.FormulaR1C1 <- value
-  member __.cell(row': int) = XlCell(column.Cell row')
-  member __.cells() = XlCells(column.Cells())
-  member __.cells(row_range: string) = XlCells(column.Cells row_range)
+  member __.cell(row': int) = column.Cell row' |> XlCell
+  member __.cells() = column.Cells() |> XlCells
+  member __.cells(row_range: string) = column.Cells row_range |> XlCells
   member __.cells(row': int) = __.cells(row'.ToString())
   member __.cells(from': int, to': int) = __.cells($"%d{from'}:%d{to'}")
 
-  member __.left() = XlColumn(column.ColumnLeft())
-  member __.left(step: int) = XlColumn(column.ColumnLeft(step))
-  member __.right() = XlColumn(column.ColumnRight())
-  member __.right(step: int) = XlColumn(column.ColumnRight(step))
+  member __.left() = column.ColumnLeft() |> XlColumn
+  member __.left(step: int) = column.ColumnLeft(step) |> XlColumn
+  member __.right() = column.ColumnRight() |> XlColumn
+  member __.right(step: int) = column.ColumnRight(step) |> XlColumn
   
-  member __.adjust() = XlColumn(column.AdjustToContents())
-  member __.adjust(start_row: int) = XlColumn(column.AdjustToContents(start_row))
-  member __.adjust(start_row: int, end_row: int) = XlColumn(column.AdjustToContents(start_row, end_row))
-  member __.adjust(min_width: float, max_width: float) = XlColumn(column.AdjustToContents(min_width, max_width))
-  member __.adjust(start_row: int, min_width: float, max_width: float) = XlColumn(column.AdjustToContents(start_row, min_width, max_width))
-  member __.adjust(start_row: int, end_row: int, min_width: float, max_width: float) = XlColumn(column.AdjustToContents(start_row, end_row, min_width, max_width))
+  member __.adjust() = column.AdjustToContents() |> XlColumn
+  member __.adjust(start_row: int) = column.AdjustToContents(start_row) |> XlColumn
+  member __.adjust(start_row: int, end_row: int) = column.AdjustToContents(start_row, end_row) |> XlColumn
+  member __.adjust(min_width: float, max_width: float) = column.AdjustToContents(min_width, max_width) |> XlColumn
+  member __.adjust(start_row: int, min_width: float, max_width: float) = column.AdjustToContents(start_row, min_width, max_width) |> XlColumn
+  member __.adjust(start_row: int, end_row: int, min_width: float, max_width: float) = column.AdjustToContents(start_row, end_row, min_width, max_width) |> XlColumn
   
   member __.clear(?options: ClearOption) = match options with Some opt -> column.Clear(opt) | None -> column.Clear()
   member __.hide() = column.Hide()
   member __.unhide() = column.Unhide()
 
-  member __.group() = XlColumn(column.Group())
-  member __.group(outline_level: int) = XlColumn(column.Group(outline_level))
-  member __.group(collapse: bool) = XlColumn(column.Group(collapse))
-  member __.group(outline_level: int, collapse: bool) = XlColumn(column.Group(outline_level, collapse))
-  member __.ungroup() = XlColumn(column.Ungroup())
-  member __.ungroup(from_all: bool) = XlColumn(column.Ungroup(from_all))
-  member __.expand() = XlColumn(column.Expand())
-  member __.collapse() = XlColumn(column.Collapse())
+  member __.group() = column.Group() |> ignore
+  member __.group(outline_level: int) = column.Group(outline_level) |> ignore
+  member __.group(collapse: bool) = column.Group(collapse) |> ignore
+  member __.group(outline_level: int, collapse: bool) = column.Group(outline_level, collapse) |> ignore
+  member __.ungroup() = column.Ungroup() |> ignore
+  member __.ungroup(from_all: bool) = column.Ungroup(from_all) |> ignore
+  member __.expand() = column.Expand() |> ignore
+  member __.collapse() = column.Collapse() |> ignore
 
-  member __.add_vertical_pagebreak() = XlColumn(column.AddVerticalPageBreak())
-  member __.insert_after(number_of_columns: int) = XlColumns(column.InsertColumnsAfter(number_of_columns))
-  member __.insert_before(number_of_columns: int) = XlColumns(column.InsertColumnsBefore(number_of_columns))
+  member __.add_vertical_pagebreak() = column.AddVerticalPageBreak() |> XlColumn
+  member __.insert_after(number_of_columns: int) = column.InsertColumnsAfter(number_of_columns) |> XlColumns
+  member __.insert_before(number_of_columns: int) = column.InsertColumnsBefore(number_of_columns) |> XlColumns
 
   interface IEnumerable<XlCell> with
     member __.GetEnumerator(): IEnumerator = 
-      let cells = column.Cells() |> Seq.map(fun cell -> XlCell(cell))
+      let cells = column.Cells() |> Seq.map XlCell
       (cells :> IEnumerable).GetEnumerator()
     member __.GetEnumerator(): IEnumerator<XlCell> = 
-      let cells = column.Cells() |> Seq.map(fun cell -> XlCell(cell))
+      let cells = column.Cells() |> Seq.map XlCell
       cells.GetEnumerator()
       
 
@@ -357,10 +357,10 @@ and XlColumns internal (columns: IXLColumns) =
 
   interface IEnumerable<XlColumn> with
     member __.GetEnumerator(): IEnumerator = 
-      let columns = columns |> Seq.map(fun column -> XlColumn(column))
+      let columns = columns |> Seq.map XlColumn
       (columns :> IEnumerable).GetEnumerator()
     member __.GetEnumerator(): IEnumerator<XlColumn> = 
-      let columns = columns |> Seq.map(fun column -> XlColumn(column))
+      let columns = columns |> Seq.map XlColumn
       columns.GetEnumerator()
   
   
@@ -427,10 +427,10 @@ and XlRangeColumns internal (range: IXLRangeColumns) =
 
   interface IEnumerable<XlRangeColumn> with
     member __.GetEnumerator(): IEnumerator = 
-      let cs = range |> Seq.map(fun column -> XlRangeColumn(column))
+      let cs = range |> Seq.map XlRangeColumn
       (cs :> IEnumerable).GetEnumerator()
     member __.GetEnumerator(): IEnumerator<XlRangeColumn> =
-      let cs = range |> Seq.map(fun column -> XlRangeColumn(column))
+      let cs = range |> Seq.map XlRangeColumn
       cs.GetEnumerator()
     
 
@@ -438,21 +438,21 @@ and XlRangeColumns internal (range: IXLRangeColumns) =
 and XlRange internal (range: IXLRange) =
   member internal __.raw with get() = range
   member __.value with set(value) = range.Value <- value
-  member __.first_cell with get() = XlCell(range.FirstCell())
-  member __.first_cell_used with get() = XlCell(range.FirstCellUsed())
-  member __.last_cell with get() = XlCell(range.LastCell())
-  member __.last_cell_used with get() = XlCell(range.LastCellUsed())
+  member __.first_cell with get() = range.FirstCell() |> XlCell
+  member __.first_cell_used with get() = range.FirstCellUsed() |> XlCell
+  member __.last_cell with get() = range.LastCell() |> XlCell
+  member __.last_cell_used with get() = range.LastCellUsed() |> XlCell
   member __.style with get() = range.Style |> XlStyle
 
   member __.fx(value: obj) = range.FormulaA1 <- value.ToString()
   member __.set(value) = __.value <- box value
   member __.set_formula(value: string) = range.FormulaA1 <- value
   member __.set_formula_r1c1(value: string) = range.FormulaR1C1 <- value
-  member __.cell(row: int, column: int) = XlCell(range.Cell(row, column))
-  member __.cell(address: string) = XlCell(range.Cell address)
-  member __.cells(from': Address, to': Address) = XlCells(range.Cells $"%s{from'.to_string()}:%s{to'.to_string()}")
-  member __.cells(from': int * int, to':  int * int) = XlCells(range.Cells $"%s{from'.to_address()}:%s{to'.to_address()}")
-  member __.cells(address: string) = XlCells(range.Cells address)
+  member __.cell(row: int, column: int) = range.Cell(row, column) |> XlCell
+  member __.cell(address: string) = range.Cell address |> XlCell
+  member __.cells(from': Address, to': Address) = range.Cells $"%s{from'.to_string()}:%s{to'.to_string()}" |> XlCells
+  member __.cells(from': int * int, to':  int * int) = range.Cells $"%s{from'.to_address()}:%s{to'.to_address()}" |> XlCells
+  member __.cells(address: string) = range.Cells address |> XlCells
   member __.insert_column_after(number_of_columns: int) = range.InsertColumnsAfter(number_of_columns) |> XlRangeColumns
   member __.insert_column_before(number_of_columns: int) = range.InsertColumnsBefore(number_of_columns) |> XlRangeColumns
   member __.insert_row_above(number_of_rows: int) = range.InsertRowsAbove(number_of_rows) |> XlRangeRows
