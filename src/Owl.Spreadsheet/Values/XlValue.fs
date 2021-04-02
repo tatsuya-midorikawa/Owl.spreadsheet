@@ -453,14 +453,10 @@ and XlRange internal (range: IXLRange) =
   member __.cells(from': Address, to': Address) = XlCells(range.Cells $"%s{from'.to_string()}:%s{to'.to_string()}")
   member __.cells(from': int * int, to':  int * int) = XlCells(range.Cells $"%s{from'.to_address()}:%s{to'.to_address()}")
   member __.cells(address: string) = XlCells(range.Cells address)
-  // TODO
-  member __.insert_column_after(number_of_columns: int) = range.InsertColumnsAfter(number_of_columns)
-  // TODO
-  member __.insert_column_before(number_of_columns: int) = range.InsertColumnsBefore(number_of_columns)
-  // TODO
-  member __.insert_row_above(number_of_rows: int) = range.InsertRowsAbove(number_of_rows)
-  // TODO
-  member __.insert_row_below(number_of_rows: int) = range.InsertRowsBelow(number_of_rows)
+  member __.insert_column_after(number_of_columns: int) = range.InsertColumnsAfter(number_of_columns) |> XlRangeColumns
+  member __.insert_column_before(number_of_columns: int) = range.InsertColumnsBefore(number_of_columns) |> XlRangeColumns
+  member __.insert_row_above(number_of_rows: int) = range.InsertRowsAbove(number_of_rows) |> XlRangeRows
+  member __.insert_row_below(number_of_rows: int) = range.InsertRowsBelow(number_of_rows) |> XlRangeRows
   
   member __.clear(?options: ClearOption) = match options with Some opt -> range.Clear(opt) | None -> range.Clear()
   
