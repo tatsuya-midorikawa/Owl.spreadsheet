@@ -544,10 +544,16 @@ and XlTable internal (table: IXLTable) =
 
   member __.append(data: DataTable, ?propagate_extra_columns: bool) =
     let flag = match propagate_extra_columns with Some propagate_extra_columns' -> propagate_extra_columns' | None -> false
-    table.AppendData(data, flag) |> XlRange
+    table.AppendData(data, flag) |> ignore
   member __.append(data: seq<'T>, ?propagate_extra_columns: bool) =
     let flag = match propagate_extra_columns with Some propagate_extra_columns' -> propagate_extra_columns' | None -> false
-    table.AppendData(data, flag) |> XlRange
+    table.AppendData(data, flag) |> ignore
+  member __.replace(data: DataTable, ?propagate_extra_columns: bool) =
+    let flag = match propagate_extra_columns with Some propagate_extra_columns' -> propagate_extra_columns' | None -> false
+    table.ReplaceData(data, flag) |> ignore
+  member __.replace(data: seq<'T>, ?propagate_extra_columns: bool) =
+    let flag = match propagate_extra_columns with Some propagate_extra_columns' -> propagate_extra_columns' | None -> false
+    table.ReplaceData(data, flag) |> ignore
   member __.as_datatable() = table.AsNativeDataTable()
 
   // TODO
@@ -559,6 +565,7 @@ and XlTable internal (table: IXLTable) =
   member __.delete(option: ShiftDeleted) = table.Delete(option)
   member __.delete_comments() = table.DeleteComments()
   
+
 
 // TODO
 and XlTableField internal (field: IXLTableField) =
