@@ -535,7 +535,6 @@ and XlRange internal (range: IXLRange) =
 
   
 
-// TODO
 and XlTable internal (table: IXLTable) =
   member internal __.raw with get() = table
   member __.auto_filter with get() = table.AutoFilter |> XlAutoFilter
@@ -574,12 +573,21 @@ and XlTable internal (table: IXLTable) =
   
 
 
-// TODO
 and XlTableField internal (field: IXLTableField) =
   member internal __.raw with get() = field
+  member __.index with get() = field.Index
+  member __.name with get() = field.Name
+  member __.table with get() = field.Table |> XlTable
+  member __.cells() = field.DataCells |> XlCells
+  member __.totals_cell() = field.TotalsCell |> XlCell
+  member __.header() = field.HeaderCell |> XlCell
+  member __.get_formula() = field.TotalsRowFormulaA1
+  member __.fx(value: obj) =
+    field.TotalsRowFormulaA1 <- match value.GetType() with t when t = typeof<string> -> value |> unbox<string> | _ -> $"{value}"
+  member __.delete() = field.Delete()
 
 
-
+                                
 // TODO
 and XlPivotTable internal (table: IXLPivotTable) =
   member internal __.raw with get() = table
