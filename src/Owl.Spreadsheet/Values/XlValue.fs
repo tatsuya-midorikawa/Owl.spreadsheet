@@ -34,8 +34,7 @@ type XlCell internal (cell: IXLCell) =
   member __.set_formula_r1c1(value: string) = cell.FormulaR1C1 <- value
   member __.row_number with get() = cell.Address.RowNumber
   member __.column_number with get() = cell.Address.ColumnNumber
-  // TODO
-  member __.style with get() = cell.Style
+  member __.style with get() = cell.Style |> XlStyle
 
   member __.column with get() = XlColumn(cell.WorksheetColumn())
   member __.row with get() = XlRow(cell.WorksheetRow())
@@ -78,8 +77,7 @@ and XlCells internal (cells: IXLCells) =
   member __.fx(value: obj) = cells.FormulaA1 <- value.ToString()
   member __.set_formula(value: string) = cells.FormulaA1 <- value
   member __.set_formula_r1c1(value: string) = cells.FormulaR1C1 <- value
-  // TODO
-  member __.style with get() = cells.Style
+  member __.style with get() = cells.Style |> XlStyle
   
   member __.clear(?options: ClearOption) = match options with Some opt -> cells.Clear(opt) | None -> cells.Clear()
   member __.delete_comments() = cells.DeleteComments()
@@ -106,8 +104,7 @@ and XlRow internal (row: IXLRow) =
   member __.last_cell with get() = XlCell(row.LastCell())
   member __.last_cell_used with get() = XlCell(row.LastCellUsed())
   member __.row_number with get() = row.RowNumber()
-  // TODO
-  member __.style with get() = row.Style
+  member __.style with get() = row.Style |> XlStyle
 
   member __.set(value) = __.value <- box value
   member __.fx(value: obj) = row.FormulaA1 <- value.ToString()
@@ -163,8 +160,7 @@ and XlRows internal (rows: IXLRows) =
   member internal __.raw with get() = rows
   member __.cells with get() = XlCells(rows.Cells())
   member __.used_cells with get() = XlCells(rows.CellsUsed())
-  // TODO
-  member __.style with get() = rows.Style
+  member __.style with get() = rows.Style |> XlStyle
 
   member __.adjust() = XlRows(rows.AdjustToContents())
   member __.adjust(start_column: int) = XlRows(rows.AdjustToContents(start_column))
@@ -210,8 +206,7 @@ and XlRangeRow internal (range: IXLRangeRow) =
   member __.row_span with get() = range.RangeAddress.RowSpan
   member __.column_span with get() = range.RangeAddress.ColumnSpan
   member __.cell_count with get() = range.CellCount()
-  // TODO
-  member __.style with get() = range.Style
+  member __.style with get() = range.Style |> XlStyle
 
   member __.fx(value: obj) = range.FormulaA1 <- value.ToString()
   member __.set(value) = __.value <- box value
@@ -255,9 +250,8 @@ and XlRangeRow internal (range: IXLRangeRow) =
 
 and XlRangeRows internal (range: IXLRangeRows) =
   member internal __.raw with get() = range
-  member __.cells with get() = range.Cells() |> XlCells
-  // TODO
-  member __.style with get() = range.Style
+  member __.cells() = range.Cells() |> XlCells
+  member __.style with get() = range.Style |> XlStyle
 
   member __.delete() = range.Delete()
   member __.clear(?options: ClearOption) = match options with Some opt -> range.Clear(opt) | None -> range.Clear()
@@ -282,8 +276,7 @@ and XlColumn internal (column: IXLColumn) =
   member __.first_cell_used with get() = XlCell(column.FirstCellUsed())
   member __.last_cell with get() = XlCell(column.LastCell())
   member __.last_cell_used with get() = XlCell(column.LastCellUsed())
-  // TODO
-  member __.style with get() = column.Style
+  member __.style with get() = column.Style |> XlStyle
 
   member __.set(value) = __.value <- box value
   member __.fx(value: obj) = column.FormulaA1 <- value.ToString()
@@ -338,9 +331,7 @@ and XlColumns internal (columns: IXLColumns) =
   member internal __.raw with get() = columns
   member __.cells() = columns.Cells() |> XlCells
   member __.used_cells() = columns.CellsUsed() |> XlCells
-
-  // TODO
-  member __.style with get() = columns.Style
+  member __.style with get() = columns.Style |> XlStyle
   member __.set_width(width: float) = columns.Width <- width
   
   member __.adjust() = columns.AdjustToContents() |> XlColumns
@@ -374,7 +365,6 @@ and XlColumns internal (columns: IXLColumns) =
   
   
 
-// TODO
 and XlRangeColumn internal (range: IXLRangeColumn) =
   member internal __.raw with get() = range
   member __.value with set(value) = range.Value <- value
@@ -386,8 +376,7 @@ and XlRangeColumn internal (range: IXLRangeColumn) =
   member __.row_span with get() = range.RangeAddress.RowSpan
   member __.column_span with get() = range.RangeAddress.ColumnSpan
   member __.cell_count with get() = range.CellCount()
-  // TODO
-  member __.style with get() = range.Style
+  member __.style with get() = range.Style |> XlStyle
     
   member __.as_table() = range.AsTable() |> XlTable
   member __.as_table(name: string) = range.AsTable(name) |> XlTable
@@ -427,12 +416,22 @@ and XlRangeColumn internal (range: IXLRangeColumn) =
 
 
 
-// TODO
 and XlRangeColumns internal (range: IXLRangeColumns) =
   member internal __.raw with get() = range
-  // TODO
-  member __.style with get() = range.Style
+  member __.cells() = range.Cells() |> XlCells
+  member __.used_cells(?options: CellsUsedOptions) = (match options with Some opt -> range.CellsUsed(opt) | None -> range.CellsUsed()) |> XlCells
+  member __.style with get() = range.Style |> XlStyle
+  
+  member __.delete() = range.Delete()
+  member __.clear(?options: ClearOption) = match options with Some opt -> range.Clear(opt) | None -> range.Clear()
 
+  interface IEnumerable<XlRangeColumn> with
+    member __.GetEnumerator(): IEnumerator = 
+      let cs = range |> Seq.map(fun column -> XlRangeColumn(column))
+      (cs :> IEnumerable).GetEnumerator()
+    member __.GetEnumerator(): IEnumerator<XlRangeColumn> =
+      let cs = range |> Seq.map(fun column -> XlRangeColumn(column))
+      cs.GetEnumerator()
     
 
 // TODO
@@ -443,8 +442,7 @@ and XlRange internal (range: IXLRange) =
   member __.first_cell_used with get() = XlCell(range.FirstCellUsed())
   member __.last_cell with get() = XlCell(range.LastCell())
   member __.last_cell_used with get() = XlCell(range.LastCellUsed())
-  // TODO
-  member __.style with get() = range.Style
+  member __.style with get() = range.Style |> XlStyle
 
   member __.fx(value: obj) = range.FormulaA1 <- value.ToString()
   member __.set(value) = __.value <- box value
@@ -475,8 +473,13 @@ and XlTable internal (table: IXLTable) =
   member __.style with get() = table.Style
   
   
-
   
 // TODO
 and XlPivotTable internal (table: IXLPivotTable) =
   member internal __.raw with get() = table
+  
+
+  
+// TODO
+and XlStyle internal (style: IXLStyle) =
+  member internal __.raw with get() = style
