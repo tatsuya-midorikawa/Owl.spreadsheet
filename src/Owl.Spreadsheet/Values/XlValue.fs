@@ -666,6 +666,16 @@ and XlBorder internal (border: IXLBorder) =
 // TODO
 and XlColor internal (color: XLColor) =
   member internal __.raw with get() = color
+  member __.value with get() = color.Color
+
+  static member from_argb(argb: int) = XLColor.FromArgb(argb) |> XlColor
+  static member from_argb(a: int, r: int, g: int, b: int) = XLColor.FromArgb(a, r, g, b) |> XlColor
+  static member from_rgb(r: int, g: int, b: int) = XLColor.FromArgb(r, g, b) |> XlColor
+  static member from_color(color: System.Drawing.Color) = XLColor.FromColor(color) |> XlColor
+
+  static member no_color with get() = XLColor.NoColor |> XlColor
+  static member alice_blue with get() = XLColor.AliceBlue |> XlColor
+
 
 
 // TODO
