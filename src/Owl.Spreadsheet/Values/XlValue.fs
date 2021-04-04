@@ -599,6 +599,8 @@ and XlStyle internal (style: IXLStyle) =
   member internal __.raw with get() = style
   member __.alignment with get() = style.Alignment |> XlAlignment
   member __.border with get() = style.Border |> XlBorder
+  member __.date_format with get() = style.DateFormat |> XlNumberFormat
+  member __.fill with get() = style.Fill |> XlFill
 
   member __.set_alignment(alignment: XlAlignment) = style.Alignment <- alignment.raw
   member __.set_border(border: XlBorder) = style.Border <- border.raw
@@ -1412,7 +1414,26 @@ and XlColor internal (color: XLColor) =
   static member carmine_pink with get() = XLColor.CarminePink |> XlColor
 
 
+  
+and XlNumberFormat internal (format: IXLNumberFormat) =
+  member internal __.raw with get() = format
+  member __.format with get() = format.Format
+  member __.set_format(format': string) = format.SetFormat(format') |> ignore
+  
 
+
+and XlFill internal (fill: IXLFill) =
+  member internal __.raw with get() = fill
+  member __.background_color with get() = fill.BackgroundColor |> XlColor
+  member __.pattern_color with get() = fill.PatternColor |> XlColor
+  member __.pattern_type with get() : FillPatternValues = fill.PatternType
+
+  member __.set_background_color(color: XlColor) = fill.SetBackgroundColor(color.raw)
+  member __.set_pattern_color(color: XlColor) = fill.SetPatternColor(color.raw)
+  member __.set_pattern_type(pattern: FillPatternValues) = fill.SetPatternType(pattern)
+
+
+ 
 // TODO
 and XlAutoFilter internal (filter: IXLAutoFilter) =
   member internal __.raw with get() = filter

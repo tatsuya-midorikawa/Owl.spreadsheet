@@ -8,3 +8,4 @@ type AlignmentHorizontalValues = XLAlignmentHorizontalValues
 type BorderStyleValues = XLBorderStyleValues
 type ThemeColor = XLThemeColor
 type ColorType = XLColorType
+type FillPatternValues = XLFillPatternValues
