@@ -614,9 +614,9 @@ and XlAlignment internal (align: IXLAlignment) =
   member __.justify_lastline with get() = align.JustifyLastLine
   member __.indent with get() = align.Indent
   member __.wrap_text with get() = align.WrapText
-  member __.reading_order with get() : XlAlignmentReadingOrderValues = align.ReadingOrder
-  member __.vertical with get() : XlAlignmentVerticalValues = align.Vertical
-  member __.horizontal with get() : XlAlignmentHorizontalValues = align.Horizontal
+  member __.reading_order with get() : AlignmentReadingOrderValues = align.ReadingOrder
+  member __.vertical with get() : AlignmentVerticalValues = align.Vertical
+  member __.horizontal with get() : AlignmentHorizontalValues = align.Horizontal
 
   member __.set_top_to_bottom(value: bool) = align.TopToBottom <- value
   member __.set_text_rotation(value: int) = align.TextRotation <- value
@@ -625,9 +625,9 @@ and XlAlignment internal (align: IXLAlignment) =
   member __.set_justify_lastline(value: bool) = align.JustifyLastLine <- value
   member __.set_indent(value: int) = align.Indent <- value
   member __.set_wrap_text(value: bool) = align.WrapText <- value
-  member __.set_reading_order(value: XlAlignmentReadingOrderValues) = align.ReadingOrder <- value
-  member __.set_vertical(vertical: XlAlignmentVerticalValues) = align.Vertical <- vertical
-  member __.set_horizontal(horizontal: XlAlignmentHorizontalValues) = align.Horizontal <- horizontal
+  member __.set_reading_order(value: AlignmentReadingOrderValues) = align.ReadingOrder <- value
+  member __.set_vertical(vertical: AlignmentVerticalValues) = align.Vertical <- vertical
+  member __.set_horizontal(horizontal: AlignmentHorizontalValues) = align.Horizontal <- horizontal
 
 
 
@@ -638,11 +638,11 @@ and XlBorder internal (border: IXLBorder) =
   member __.bottom_color with get() = border.BottomBorderColor |> XlColor
   member __.left_color with get() = border.LeftBorderColor |> XlColor
   member __.right_color with get() = border.RightBorderColor |> XlColor
-  member __.diagonal with get() : XlBorderStyleValues = border.DiagonalBorder
-  member __.top with get() : XlBorderStyleValues = border.TopBorder
-  member __.bottom with get() : XlBorderStyleValues = border.BottomBorder
-  member __.left with get() : XlBorderStyleValues = border.LeftBorder
-  member __.right with get() : XlBorderStyleValues = border.RightBorder
+  member __.diagonal with get() : BorderStyleValues = border.DiagonalBorder
+  member __.top with get() : BorderStyleValues = border.TopBorder
+  member __.bottom with get() : BorderStyleValues = border.BottomBorder
+  member __.left with get() : BorderStyleValues = border.LeftBorder
+  member __.right with get() : BorderStyleValues = border.RightBorder
   member __.diagonal_up with get() = border.DiagonalUp
   member __.diagonal_down with get() = border.DiagonalDown
 
@@ -653,25 +653,27 @@ and XlBorder internal (border: IXLBorder) =
   member __.set_bottom_color(color: XlColor) = border.BottomBorderColor <- color.raw
   member __.set_left_color(color: XlColor) = border.LeftBorderColor <- color.raw
   member __.set_right_color(color: XlColor) = border.RightBorderColor <- color.raw
-  member __.set_diagonal(value: XlBorderStyleValues) = border.DiagonalBorder <- value
-  member __.set_top(value: XlBorderStyleValues) = border.TopBorder <- value
-  member __.set_bottom(value: XlBorderStyleValues) = border.BottomBorder <- value
-  member __.set_left(value: XlBorderStyleValues) = border.LeftBorder <- value
-  member __.set_right(value: XlBorderStyleValues) = border.RightBorder <- value
+  member __.set_diagonal(value: BorderStyleValues) = border.DiagonalBorder <- value
+  member __.set_top(value: BorderStyleValues) = border.TopBorder <- value
+  member __.set_bottom(value: BorderStyleValues) = border.BottomBorder <- value
+  member __.set_left(value: BorderStyleValues) = border.LeftBorder <- value
+  member __.set_right(value: BorderStyleValues) = border.RightBorder <- value
   member __.set_diagonal_up(value: bool) = border.DiagonalUp <- value
   member __.set_diagonal_down(value: bool) = border.DiagonalDown <- value
 
 
 
-// TODO
 and XlColor internal (color: XLColor) =
   member internal __.raw with get() = color
   member __.value with get() = color.Color
+  member __.color_type with get() : ColorType = color.ColorType
+  member __.tint with get() = color.ThemeTint
 
   static member from_argb(argb: int) = XLColor.FromArgb(argb) |> XlColor
   static member from_argb(a: int, r: int, g: int, b: int) = XLColor.FromArgb(a, r, g, b) |> XlColor
   static member from_rgb(r: int, g: int, b: int) = XLColor.FromArgb(r, g, b) |> XlColor
   static member from_color(color: System.Drawing.Color) = XLColor.FromColor(color) |> XlColor
+  static member from_theme(theme: ThemeColor) = XLColor.FromTheme(theme) |> XlColor
 
   static member forest_green_traditional with get() = XLColor.ForestGreenTraditional |> XlColor
   static member myrtle with get() = XLColor.Myrtle |> XlColor
