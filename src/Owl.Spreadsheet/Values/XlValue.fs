@@ -601,6 +601,7 @@ and XlStyle internal (style: IXLStyle) =
   member __.border with get() = style.Border |> XlBorder
   member __.date_format with get() = style.DateFormat |> XlNumberFormat
   member __.fill with get() = style.Fill |> XlFill
+  member __.font with get() = style.Font |> XlFont
 
   member __.set_alignment(alignment: XlAlignment) = style.Alignment <- alignment.raw
   member __.set_border(border: XlBorder) = style.Border <- border.raw
@@ -1431,6 +1432,12 @@ and XlFill internal (fill: IXLFill) =
   member __.set_background_color(color: XlColor) = fill.SetBackgroundColor(color.raw)
   member __.set_pattern_color(color: XlColor) = fill.SetPatternColor(color.raw)
   member __.set_pattern_type(pattern: FillPatternValues) = fill.SetPatternType(pattern)
+
+
+
+// TODO
+and XlFont internal (font: IXLFont) =
+  member internal __.raw with get() = font
 
 
  
