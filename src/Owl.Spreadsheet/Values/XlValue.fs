@@ -594,7 +594,6 @@ and XlPivotTable internal (table: IXLPivotTable) =
   
 
   
-// TODO
 and XlStyle internal (style: IXLStyle) =
   member internal __.raw with get() = style
   member __.alignment with get() = style.Alignment |> XlAlignment
@@ -602,11 +601,19 @@ and XlStyle internal (style: IXLStyle) =
   member __.date_format with get() = style.DateFormat |> XlNumberFormat
   member __.fill with get() = style.Fill |> XlFill
   member __.font with get() = style.Font |> XlFont
+  member __.include_quote_prefix with get() = style.IncludeQuotePrefix
+  member __.number_format with get() = style.NumberFormat |> XlNumberFormat
+  member __.protection with get() = style.Protection |> XlProtection
 
   member __.set_alignment(alignment: XlAlignment) = style.Alignment <- alignment.raw
   member __.set_border(border: XlBorder) = style.Border <- border.raw
-
+  member __.set_fill(fill: XlFill) = style.Fill <- fill.raw
+  member __.set_font(font: XlFont) = style.Font <- font.raw
+  member __.set_include_quote_prefix(value: bool) = style.IncludeQuotePrefix <- value
+  member __.set_number_format(format: XlNumberFormat) = style.NumberFormat <- format.raw
+  member __.set_protection(protection: XlProtection) = style.Protection <- protection.raw
   
+
   
 and XlAlignment internal (align: IXLAlignment) =
   member internal __.raw with get() = align
@@ -1470,6 +1477,16 @@ and XlFont internal (font: IXLFont) =
   member __.set_vertical_alignment(value: FontVerticalTextAlignmentValues) = font.SetVerticalAlignment(value) |> ignore
   member __.set_familiy_numbering(value: FontFamilyNumberingValues) = font.SetFontFamilyNumbering(value) |> ignore
   member __.set_charset(value: FontCharSet) = font.SetFontCharSet(value) |> ignore
+
+
+
+and XlProtection internal (protection: IXLProtection) =
+  member internal __.raw with get() = protection
+  member __.locked with get() = protection.Locked
+  member __.hidden with get() = protection.Hidden
+
+  member __.set_locked(value: bool) = protection.SetLocked(value) |> ignore
+  member __.set_hidden(value: bool) = protection.SetHidden(value) |> ignore
 
 
 
