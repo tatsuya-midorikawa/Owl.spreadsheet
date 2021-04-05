@@ -1435,12 +1435,44 @@ and XlFill internal (fill: IXLFill) =
 
 
 
-// TODO
 and XlFont internal (font: IXLFont) =
   member internal __.raw with get() = font
+  member __.bold with get() = font.Bold
+  member __.italic with get() = font.Italic
+  member __.strikethrough with get() = font.Strikethrough
+  member __.shadow with get() = font.Shadow
+  member __.size with get() = font.FontSize
+  member __.name with get() = font.FontName
+  member __.color with get() = font.FontColor |> XlColor
+  member __.underline with get() : FontUnderlineValues = font.Underline
+  member __.vertical_alignment with get() : FontVerticalTextAlignmentValues = font.VerticalAlignment
+  member __.familiy_numbering with get() : FontFamilyNumberingValues = font.FontFamilyNumbering
+  member __.charset with get() : FontCharSet = font.FontCharSet
+
+  member __.set_bold(?value: bool) = 
+    match value with Some v -> font.SetBold(v) | None -> font.SetBold()
+    |> ignore
+  member __.set_italic(?value: bool) =
+    match value with Some v -> font.SetItalic(v) | None -> font.SetItalic()
+    |> ignore
+  member __.set_strikethrough(?value: bool) =
+    match value with Some v -> font.SetStrikethrough(v) | None -> font.SetStrikethrough()
+    |> ignore
+  member __.set_shadow(?value: bool) =
+    match value with Some v -> font.SetShadow(v) | None -> font.SetShadow()
+    |> ignore
+  member __.set_siza(value: float) = font.SetFontSize(value) |> ignore
+  member __.set_name(value: string) = font.SetFontName(value) |> ignore
+  member __.set_color(value: XlColor) = font.SetFontColor(value.raw) |> ignore
+  member __.set_underline(?value: FontUnderlineValues) =
+    match value with Some v -> font.SetUnderline(v) | None -> font.SetUnderline()
+    |> ignore
+  member __.set_vertical_alignment(value: FontVerticalTextAlignmentValues) = font.SetVerticalAlignment(value) |> ignore
+  member __.set_familiy_numbering(value: FontFamilyNumberingValues) = font.SetFontFamilyNumbering(value) |> ignore
+  member __.set_charset(value: FontCharSet) = font.SetFontCharSet(value) |> ignore
 
 
- 
+
 // TODO
 and XlAutoFilter internal (filter: IXLAutoFilter) =
   member internal __.raw with get() = filter

@@ -9,3 +9,6 @@ type BorderStyleValues = XLBorderStyleValues
 type ThemeColor = XLThemeColor
 type ColorType = XLColorType
 type FillPatternValues = XLFillPatternValues
+type FontUnderlineValues = XLFontUnderlineValues
+type FontVerticalTextAlignmentValues = XLFontVerticalTextAlignmentValues
+type FontCharSet = XLFontCharSet
