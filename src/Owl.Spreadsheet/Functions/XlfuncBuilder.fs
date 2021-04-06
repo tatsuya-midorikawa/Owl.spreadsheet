@@ -20,19 +20,19 @@ type XlfuncBuilder private() =
 
   // TODO
   /// <summary></summary>
-  static member public MAX(args: ^T seq) = raise(exn "")
+  static member public MAX(args: #obj seq) = raise(exn "")
   // TODO
   /// <summary></summary>
-  static member public MIN(args: ^T seq) = raise(exn "")
+  static member public MIN(args: #obj seq) = raise(exn "")
   // TODO
   /// <summary></summary>
-  static member public SMALL(args: ^T seq, rank: int) = raise(exn "")
+  static member public SMALL(args: #obj seq, rank: int) = raise(exn "")
   // TODO
   /// <summary></summary>
-  static member public SUM(args: ^T seq) = raise(exn "")
+  static member public SUM(args: #obj seq) = raise(exn "")
   // TODO
   /// <summary></summary>
-  static member public AVERAGE(args: ^T seq) = raise(exn "")
+  static member public AVERAGE(args: #obj seq) = raise(exn "")
   // TODO
   /// <summary></summary>
   static member public COUNT() = raise(exn "")
