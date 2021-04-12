@@ -2,7 +2,7 @@
 
 open ClosedXML.Excel
 
-module Spreadsheet =
+module XlWorkbook =
   [<Literal>]
   let TRUE = true
   [<Literal>]

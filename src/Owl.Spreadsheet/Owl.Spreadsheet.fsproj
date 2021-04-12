@@ -3,6 +3,17 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Version>0.0.1</Version>
+    <Authors>midoliy</Authors>
+    <Company>tech leaves</Company>
+    <Copyright>© 2021 Tatsuya Midorikawa. All rights rserved</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>ClosedXML wrapper library for F#</Description>
+    <PackageProjectUrl>https://github.com/tatsuya-midorikawa/Owl.Spreadsheet</PackageProjectUrl>
+    <PackageIcon>owl.spreadsheet.png</PackageIcon>
+    <RepositoryUrl>https://github.com/tatsuya-midorikawa/Owl.Spreadsheet</RepositoryUrl>
+    <PackageTags>excel,spreadsheet,fsharp</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +28,7 @@
     <Compile Include="Functions\XlfuncBuilder.fs" />
     <Compile Include="Functions\Xlfunc.fs" />
     <Compile Include="XlWorksheet.fs" />
-    <Compile Include="Spreadsheet.fs" />
+    <Compile Include="XlWorkbook.fs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +37,13 @@
 
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\assets\owl.spreadsheet.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

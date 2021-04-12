@@ -1,5 +1,5 @@
 ﻿open Owl.Spreadsheet
-open Owl.Spreadsheet.Spreadsheet
+open Owl.Spreadsheet.XlWorkbook
 open Owl.Spreadsheet.XlWorksheet
 open type Owl.Spreadsheet.Xlfunc
 //open Owl.Spreadsheet.Convert
@@ -131,9 +131,9 @@ let cell = worksheet |> get_cell
 let range = worksheet |> get_range
 
 for i in 1..10 do
-  cell(i, 1).set(RANDBETWEEN(1, 10))
-  cell(i, 2).set(RANDBETWEEN(1, 10))
-  cell(i, 3).set(POWER(cell(i, 1), cell(i, 2)))
+  cell(i, 1).set <| RANDBETWEEN(1, 10)
+  cell(i, 2).set <| RANDBETWEEN(1, 10)
+  cell(i, 3).set <| POWER(cell(i, 1), cell(i, 2))
 
 cell(1, 4).set(11)
 cell(2, 4).set(VLOOKUP(cell(1, 4), range(1, 1)(10, 1), 1))
