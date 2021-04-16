@@ -1,7 +1,10 @@
-﻿open Owl.Spreadsheet
-open Owl.Spreadsheet.XlWorkbook
-open Owl.Spreadsheet.XlWorksheet
-open type Owl.Spreadsheet.Xlfunc
+﻿// open Owl.Spreadsheet
+// open Owl.Spreadsheet.XlWorkbook
+// open Owl.Spreadsheet.XlWorksheet
+// open type Owl.Spreadsheet.Xlfunc
+
+open Owl.Spreadsheet.Tools
+
 //open Owl.Spreadsheet.Convert
 //open type Owl.Spreadsheet.XlfuncBuilder
 
@@ -122,20 +125,25 @@ open type Owl.Spreadsheet.Xlfunc
 
 
 
-// ========================
-// Sample 7.
+// // ========================
+// // Sample 7.
 
-let workbook = new_workbook_with "./sample.xlsx"
-let worksheet = workbook |> get_sheet_at 1
-let cell = worksheet |> get_cell
-let range = worksheet |> get_range
+// let workbook = new_workbook_with "./sample.xlsx"
+// let worksheet = workbook |> get_sheet_at 1
+// let cell = worksheet |> get_cell
+// let range = worksheet |> get_range
 
-for i in 1..10 do
-  cell(i, 1).set <| RANDBETWEEN(1, 10)
-  cell(i, 2).set <| RANDBETWEEN(1, 10)
-  cell(i, 3).set <| POWER(cell(i, 1), cell(i, 2))
+// for i in 1..10 do
+//   cell(i, 1).set <| RANDBETWEEN(1, 10)
+//   cell(i, 2).set <| RANDBETWEEN(1, 10)
+//   cell(i, 3).set <| POWER(cell(i, 1), cell(i, 2))
 
-cell(1, 4).set(11)
-cell(2, 4).set(VLOOKUP(cell(1, 4), range(1, 1)(10, 1), 1))
+// cell(1, 4).set(11)
+// cell(2, 4).set(VLOOKUP(cell(1, 4), range(1, 1)(10, 1), 1))
 
-workbook |> save |> close
+// workbook |> save |> close
+
+let sheet = create "sample.xlsx" |> add "sample1"
+sheet.["A1"].set "test"
+sheet.save()
+sheet.close()

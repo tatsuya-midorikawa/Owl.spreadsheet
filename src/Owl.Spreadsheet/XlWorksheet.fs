@@ -5,6 +5,13 @@ open ClosedXML.Excel
 
 type XlWorksheet (sheet: IXLWorksheet) =
   member internal __.raw with get() = sheet
+  member __.save() = sheet.Workbook.Save()
+  member __.save_as(filepath: string) = sheet.Workbook.SaveAs(filepath)
+  member __.close() = sheet.Workbook.Dispose()
+  member __.save_and_close() = __.save(); __.close()
+  member __.Item 
+    with get(row: int, column: string) = sheet.Cell(row, column) |> XlCell
+    and set(row: int, column: string) (value: obj) = sheet.Cell(row, column).Value <- value
   member __.Item 
     with get(row: int, column: int) = sheet.Cell(row, column) |> XlCell
     and set(row: int, column: int) (value: obj) = sheet.Cell(row, column).Value <- value
