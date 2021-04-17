@@ -25,7 +25,6 @@
     <Compile Include="Values\XlValue.fs" />
     <Compile Include="Functions\XlfuncBuilder.fs" />
     <Compile Include="Functions\Xlfunc.fs" />
-    <Compile Include="XlWorksheet.fs" />
     <Compile Include="XlWorkbook.fs" />
     <Compile Include="Tools.fs" />
   </ItemGroup>
