@@ -6,13 +6,17 @@ open ClosedXML.Excel
 
 type XlWorkbook (book: XLWorkbook) =
   member internal __.raw with get() = book
+  member __.Item with get(nth: int) = book.Worksheet(nth) |> XlWorksheet
+  member __.Item with get(name: string) = book.Worksheet(name) |> XlWorksheet
   member __.worksheets with get() = book.Worksheets |> XlWorksheets
   member __.worksheet(nth: int) = book.Worksheet(nth) |> XlWorksheet
   member __.worksheet(name: string) = book.Worksheet(name) |> XlWorksheet
   member __.save() = book.Save()
   member __.save_as(filepath: string) = book.SaveAs(filepath)
   member __.close() = book.Dispose()
-  
+  member __.at(nth: int) = book.Worksheet(nth) |> XlWorksheet
+  member __.by(name: string) = book.Worksheet(name) |> XlWorksheet
+
 
 and XlWorksheet (sheet: IXLWorksheet) =
   member internal __.raw with get() = sheet
