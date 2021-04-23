@@ -8,9 +8,9 @@ module Tools =
   [<Literal>]
   let FALSE = false
 
-  let load filepath = XlWorkbook.open_workbook filepath
-  let create name = XlWorkbook.new_workbook_with name
-  let create_from template = XlWorkbook.new_workbook_from template
+  let load (filepath: string) = new XLWorkbook(filepath) |> XlWorkbook
+  let create name = XlWorkbook.create name
+  let create_from template = XlWorkbook.create_from template
   let workbook (sheet: XlWorksheet) = sheet.workbook
 
   let fst (workbook: XlWorkbook) = workbook.worksheet(1)
@@ -25,22 +25,22 @@ module Tools =
   let del_at (n: int) (workbook: XlWorkbook) = workbook.worksheets.delete(n)
   let del_by (n: int) (worksheet: XlWorksheet) = worksheet.workbook.worksheets.delete(worksheet.raw.Name)
 
-  let save (sheet: XlWorksheet) = sheet |> workbook |> XlWorkbook.save |> ignore
-  let save_as (name: string) (sheet: XlWorksheet) = sheet |> workbook |> XlWorkbook.save_as name |> ignore
-  let save_and_close (sheet: XlWorksheet) = sheet |> workbook |> XlWorkbook.save_and_close |> ignore
-  let close (sheet: XlWorksheet) = sheet |> workbook |> XlWorkbook.close |> ignore
+  let save (sheet: XlWorksheet) = sheet.save()
+  let save_as (name: string) (sheet: XlWorksheet) = sheet.save_as name
+  let save_and_close (sheet: XlWorksheet) = sheet.save_and_close()
+  let close (sheet: XlWorksheet) = sheet.close()
 
-  let cell (row: int, column: int) (sheet: XlWorksheet) = XlWorksheet.get_cell sheet (row, column)
-  let cells (range: string) (sheet: XlWorksheet) = XlWorksheet.get_cells_at sheet range
-  let range (range: string) (sheet: XlWorksheet) = XlWorksheet.get_range_at sheet range
+  let cell (row: int, column: int) (sheet: XlWorksheet) = sheet.cell(row, column)
+  let cells (range: string) (sheet: XlWorksheet) = sheet.cells range
+  let range (range: string) (sheet: XlWorksheet) = sheet.range range
   
-  let row (row: int) (sheet: XlWorksheet) = XlWorksheet.get_row sheet row
-  let rows (first': int, last': int) (sheet: XlWorksheet) = XlWorksheet.get_rows sheet (first', last')
-  let rows_for (rows: string) (sheet: XlWorksheet) = XlWorksheet.get_rows_at sheet rows
-  let all_rows (sheet: XlWorksheet) = XlWorksheet.get_all_rows sheet
+  let row (row: int) (sheet: XlWorksheet) = sheet.row row
+  let rows (first': int, last': int) (sheet: XlWorksheet) = sheet.rows(first', last')
+  let rows_for (rows: string) (sheet: XlWorksheet) = sheet.rows rows
+  let all_rows (sheet: XlWorksheet) = sheet.rows()
 
-  let column (column: int) (sheet: XlWorksheet) = XlWorksheet.get_column sheet column
-  let column_at (column: string) (sheet: XlWorksheet) = XlWorksheet.get_column_at sheet column
-  let columns (from': int, to': int) (sheet: XlWorksheet) = XlWorksheet.get_columns sheet (from', to')
-  let columns_for (columns: string) (sheet: XlWorksheet) = XlWorksheet.get_columns_at sheet columns
-  let all_columns (sheet: XlWorksheet) = XlWorksheet.get_all_columns sheet
+  let column (column: int) (sheet: XlWorksheet) = sheet.column column
+  let column_at (column: string) (sheet: XlWorksheet) = sheet.column column
+  let columns (from': int, to': int) (sheet: XlWorksheet) = sheet.columns(from', to')
+  let columns_for (columns: string) (sheet: XlWorksheet) = sheet.columns columns
+  let all_columns (sheet: XlWorksheet) = sheet.columns()
