@@ -44,65 +44,60 @@ module internal Xlfunc =
     | t when t = typeof<float32> || t = typeof<float> || t = typeof<decimal> -> to_double(value)
     | _ -> 0.0
 
+  /// <summary></summary>
+  let value (cell: XlCell) = cell.value 
+
 [<AbstractClass;Sealed;>]
 type Xlfunc private() =
-  /// <summary></summary>
-  static member public IF(expression:bool, when_true:unit -> obj, when_false:unit -> obj) =
+  static member IF(expression:bool, when_true:unit -> obj, when_false:unit -> obj) =
     if expression then when_true() else when_false()
-
-  /// <summary></summary>
-  static member public IF(expression:bool, when_true:obj, when_false:obj) =
+  static member IF(expression:bool, when_true:obj, when_false:obj) =
     if expression then when_true else when_false
 
-  /// <summary></summary>
-  static member public AND(args: bool seq) = args.All(fun arg -> arg)
-  /// <summary></summary>
-  static member  public OR(args: bool seq) = args.Any(fun arg -> arg)
-  /// <summary></summary>
-  static member public TODAY() = datetime.Today
-  /// <summary></summary>
-  static member  public NOW() = datetime.Now
+  static member AND(args: bool seq) = args.All(fun arg -> arg)
+  static member OR(args: bool seq) = args.Any(fun arg -> arg)
+  static member TODAY() = datetime.Today
+  static member NOW() = datetime.Now
 
-  /// <summary></summary>
-  static member public MAX(args: seq<#obj>) =
-    args |> Seq.filter Xlfunc.is_number |> Seq.map Xlfunc.to_number |> Seq.max
+  static member MAX(args: seq<#obj>) = args |> Seq.filter Xlfunc.is_number |> Seq.map Xlfunc.to_number |> Seq.max
+  static member MAX(cells: XlCell seq) = cells |> Seq.map Xlfunc.value |> Xlfunc.MAX
+  static member MAX(cells: XlCells) = cells :> XlCell seq |> Xlfunc.MAX
+  static member MAX(range: XlRange) = range.cells() |> Xlfunc.MAX
+  static member MAX(row: XlRow) = row :> XlCell seq |> Xlfunc.MAX
+  static member MAX(column: XlColumn) = column :> XlCell seq |> Xlfunc.MAX
 
-    
-  /// <summary></summary>
-  static member public MAX(args: XlCell seq) =
-    args |> Seq.map (fun cell -> cell.value) |> Xlfunc.MAX
+  static member MAXA(args: seq<#obj>) = args |> Seq.filter Xlfunc.is_number_or_not_empty |> Seq.map Xlfunc.to_force_number |> Seq.max
+  static member MAXA(cells: XlCell seq) = cells |> Seq.map Xlfunc.value |> Xlfunc.MAXA
+  static member MAXA(cells: XlCells) = cells  :> XlCell seq |> Xlfunc.MAXA
+  static member MAXA(range: XlRange) = range.cells() |> Xlfunc.MAXA  
+  static member MAXA(row: XlRow) = row :> XlCell seq |> Xlfunc.MAXA
+  static member MAXA(column: XlColumn) = column :> XlCell seq |> Xlfunc.MAXA
 
-  /// <summary></summary>
-  static member public MAXA(args: seq<#obj>) =
-    args |> Seq.filter Xlfunc.is_number_or_not_empty |> Seq.map Xlfunc.to_force_number |> Seq.max
+  static member MIN(args: seq<#obj>) = args |> Seq.filter Xlfunc.is_number |> Seq.map Xlfunc.to_number |> Seq.min
+  static member MIN(cells: XlCell seq) = cells |> Seq.map Xlfunc.value |> Xlfunc.MIN
+  static member MIN(cells: XlCells) = cells :> XlCell seq |> Xlfunc.MIN
+  static member MIN(range: XlRange) = range.cells() |> Xlfunc.MIN
+  static member MIN(row: XlRow) = row :> XlCell seq |> Xlfunc.MIN
+  static member MIN(column: XlColumn) = column :> XlCell seq |> Xlfunc.MIN
 
-  /// <summary></summary>
-  static member public MAXA(args: XlCell seq) =
-    args |> Seq.map (fun cell -> cell.value) |> Xlfunc.MAXA
-    
-  /// <summary></summary>
-  static member public MIN(args: seq<#obj>) =
-    args |> Seq.filter Xlfunc.is_number |> Seq.map Xlfunc.to_number |> Seq.min
-    
-  /// <summary></summary>
-  static member public MIN(args: XlCell seq) =
-    args |> Seq.map (fun cell -> cell.value) |> Xlfunc.MIN
+  static member MINA(args: seq<#obj>) = args |> Seq.filter Xlfunc.is_number_or_not_empty |> Seq.map Xlfunc.to_force_number |> Seq.min
+  static member MINA(cells: XlCell seq) = cells |> Seq.map Xlfunc.value |> Xlfunc.MINA
+  static member MINA(cells: XlCells) = cells :> XlCell seq |> Xlfunc.MINA
+  static member MINA(range: XlRange) = range.cells() |> Xlfunc.MINA
+  static member MINA(row: XlRow) = row :> XlCell seq |> Xlfunc.MINA
+  static member MINA(column: XlColumn) = column :> XlCell seq |> Xlfunc.MINA
 
-  /// <summary></summary>
-  static member public MINA(args: seq<#obj>) =
-    args |> Seq.filter Xlfunc.is_number_or_not_empty |> Seq.map Xlfunc.to_force_number |> Seq.min
-
-  /// <summary></summary>
-  static member public MINA(args: XlCell seq) =
-    args |> Seq.map (fun cell -> cell.value) |> Xlfunc.MINA
-
-  /// <summary></summary>
-  static member public SMALL(args: seq<#obj>, rank: int) =
+  static member SMALL(args: seq<#obj>, rank: int) =
     let xs = args |> Seq.filter Xlfunc.is_number
     let index = rank - 1
     if Seq.length xs < index then "#N/A" :> obj
     else xs |> Seq.map Xlfunc.to_number |> Seq.sort |> Seq.item index :> obj
-
+  static member SMALL(cells: XlCell seq, rank: int) = (cells |> Seq.map Xlfunc.value, rank) |> Xlfunc.SMALL
+  static member SMALL(cells: XlCells, rank: int) = (cells :> XlCell seq, rank) |> Xlfunc.SMALL
+  static member SMALL(range: XlRange, rank: int) = (range.cells(), rank) |> Xlfunc.SMALL
+  static member SMALL(row: XlRow, rank: int) = (row :> XlCell seq, rank) |> Xlfunc.SMALL
+  static member SMALL(column: XlColumn, rank: int) = (column :> XlCell seq, rank) |> Xlfunc.SMALL
+  
   /// <summary></summary>
   static member public SUM(args: seq<#obj>) =
     args |> Seq.filter Xlfunc.is_number |> Seq.map Xlfunc.to_number |> Seq.sum 
