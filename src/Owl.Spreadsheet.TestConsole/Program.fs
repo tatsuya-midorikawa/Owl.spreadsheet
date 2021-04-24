@@ -143,13 +143,6 @@ open Owl.Spreadsheet.Tools
 
 // workbook |> save |> close
 
-let book = create "sample.xlsx"
-let sheet = last book
-sheet.["A1"].set 100
+let sheet = create "sample.xlsx" |> add "sample1"
+sheet.["A1"].set "test"
 sheet.save_and_close()
-
-
-//let sheet = create "sample.xlsx" |> add "sample1"
-//sheet.["A1"].set "test"
-//sheet.save()
-//sheet.close()
