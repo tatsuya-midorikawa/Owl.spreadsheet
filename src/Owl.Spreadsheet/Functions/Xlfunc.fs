@@ -98,13 +98,8 @@ type Xlfunc private() =
   static member SMALL(row: XlRow, rank: int) = (row :> XlCell seq, rank) |> Xlfunc.SMALL
   static member SMALL(column: XlColumn, rank: int) = (column :> XlCell seq, rank) |> Xlfunc.SMALL
   
-  /// <summary></summary>
-  static member public SUM(args: seq<#obj>) =
-    args |> Seq.filter Xlfunc.is_number |> Seq.map Xlfunc.to_number |> Seq.sum 
-
-  /// <summary></summary>
-  static member public SUM(args: XlCell seq) =
-    args |> Seq.map (fun cell -> cell.value) |> Xlfunc.SUM
+  static member public SUM(args: seq<#obj>) = args |> Seq.filter Xlfunc.is_number |> Seq.map Xlfunc.to_number |> Seq.sum 
+  static member public SUM(args: XlCell seq) = args |> Seq.map Xlfunc.value |> Xlfunc.SUM
 
   /// <summary></summary>
   static member public AVERAGE(args: seq<#obj>) =
