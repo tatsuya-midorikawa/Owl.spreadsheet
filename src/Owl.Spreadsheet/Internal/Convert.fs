@@ -5,7 +5,7 @@ module Convert =
   let inline to_bool(value: obj) = 
     match value with 
     | :? bool as b -> b
-    | :? string as s -> if System.String.IsNullOrEmpty(s) then false else true
+    | :? string as s -> not <| System.String.IsNullOrEmpty(s)
     | :? System.DateTime as date -> System.Convert.ToBoolean(date.Ticks)
     | :? System.TimeSpan as span -> System.Convert.ToBoolean(span.Ticks)
     | _ -> System.Convert.ToBoolean(value)
