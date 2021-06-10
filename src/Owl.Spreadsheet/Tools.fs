@@ -46,9 +46,9 @@ module Tools =
   let all_columns (sheet: XlWorksheet) = sheet.columns()
 
   let set value (cell: XlCell) = cell.set value
-  let set' value (cells: XlCells) = cells.set value
-  let set'' value (range: XlRange) = range.set value
+  let set_s value (cells: XlCells) = cells.set value
+  let set_r value (range: XlRange) = range.set value
 
   let fx formula (cell: XlCell) = cell.fx formula
-  let fx' formula (cells: XlCells) = cells.fx formula
-  let fx'' formula (range: XlRange) = range.fx formula
+  let fx_s formula (cells: XlCells) = cells.fx formula
+  let fx_r formula (range: XlRange) = range.fx formula
