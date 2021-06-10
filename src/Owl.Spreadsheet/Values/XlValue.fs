@@ -216,6 +216,7 @@ and XlRangeRow internal (range: IXLRangeRow) =
   member __.cell(column_number: string) = range.Cell(column_number) |> XlCell
   member __.cells(first_column: int, last_column:  int) = range.Cells $"%d{first_column}:%d{last_column}" |> XlCells
   member __.cells(cells_in_row: string) = range.Cells cells_in_row |> XlCells
+  member __.cells () = range.Cells() |> XlCells
   member __.as_range() = range.AsRange() |> XlRange
 
   member __.row(start': int, end': int) = range.Row(start', end') |> XlRangeRow
@@ -474,6 +475,7 @@ and XlRange internal (range: IXLRange) =
   member __.set_formula_r1c1(value: string) = range.FormulaR1C1 <- value
   member __.cell(row: int, column: int) = range.Cell(row, column) |> XlCell
   member __.cell(address: string) = range.Cell address |> XlCell
+  member __.cells() = range.Cells() |> XlCells
   member __.cells(from': Address, to': Address) = range.Cells $"%s{from'.to_string()}:%s{to'.to_string()}" |> XlCells
   member __.cells(from': int * int, to':  int * int) = range.Cells $"%s{from'.to_address()}:%s{to'.to_address()}" |> XlCells
   member __.cells(address: string) = range.Cells address |> XlCells
