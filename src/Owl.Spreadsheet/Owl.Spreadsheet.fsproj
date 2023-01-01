@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>0.0.2</Version>
+    <Version>0.0.3</Version>
     <Authors>midoliy</Authors>
-    <Company>tech leaves</Company>
+    <Company>MIDORIKAWA Tatsuya</Company>
     <Copyright>© 2021 Tatsuya Midorikawa. All rights rserved</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>ClosedXML wrapper library for F#</Description>
