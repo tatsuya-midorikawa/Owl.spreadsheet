@@ -23,7 +23,9 @@ module Tools =
   let add (name: string) (workbook: XlWorkbook) = workbook.worksheets.add(name)
   let del (name: string) (workbook: XlWorkbook) = workbook.worksheets.delete(name)
   let del_at (n: int) (workbook: XlWorkbook) = workbook.worksheets.delete(n)
-  let del_by (n: int) (worksheet: XlWorksheet) = worksheet.workbook.worksheets.delete(worksheet.raw.Name)
+  let del_by (name: string) (worksheet: XlWorksheet) = 
+    let target = if System.String.IsNullOrEmpty name then worksheet.raw.Name else name
+    worksheet.workbook.worksheets.delete(target)
 
   let save (sheet: XlWorksheet) = sheet.save()
   let save_as (name: string) (sheet: XlWorksheet) = sheet.save_as name
@@ -46,7 +48,7 @@ module Tools =
   let all_columns (sheet: XlWorksheet) = sheet.columns()
 
   let set value (cell: XlCell) = cell.set value
-  let set_s value (cells: XlCells) = cells.set value
+  let set_to_cells value (cells: XlCells) = cells.set value
   let set_r value (range: XlRange) = range.set value
 
   let fx formula (cell: XlCell) = cell.fx formula
