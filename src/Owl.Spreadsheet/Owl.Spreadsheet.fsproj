@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
+    <LanguageVersion>preview</LanguageVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Version>0.0.3</Version>
@@ -29,10 +30,7 @@
     <Compile Include="Tools.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ClosedXML" Version="0.95.4" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Update="FSharp.Core" Version="5.0.1" />
+    <PackageReference Include="ClosedXML" Version="0.97.0" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\assets\owl.spreadsheet.png">

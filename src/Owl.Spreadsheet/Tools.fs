@@ -47,10 +47,16 @@ module Tools =
   let columns_for (columns: string) (sheet: XlWorksheet) = sheet.columns columns
   let all_columns (sheet: XlWorksheet) = sheet.columns()
 
-  let set value (cell: XlCell) = cell.set value
-  let set_to_cells value (cells: XlCells) = cells.set value
-  let set_r value (range: XlRange) = range.set value
+  //let set value (cell: XlCell) = cell.set value
+  //let set_to_cells value (cells: XlCells) = cells.set value
+  //let set_r value (range: XlRange) = range.set value
 
-  let fx formula (cell: XlCell) = cell.fx formula
-  let fx_s formula (cells: XlCells) = cells.fx formula
-  let fx_r formula (range: XlRange) = range.fx formula
+  let inline set (value: ^v) (target: ^t when ^t: (member set: ^v -> unit)) =
+    target.set value
+  
+  //let fx formula (cell: XlCell) = cell.fx formula
+  //let fx_s formula (cells: XlCells) = cells.fx formula
+  //let fx_r formula (range: XlRange) = range.fx formula
+
+  let inline fx (formula: ^f) (target: ^t when ^t: (member fx: ^f-> unit)) =
+    target.fx formula
